@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BCS Famous Quotations</title>
+<style>
+:root{
+  --bg:#fbf8f1; --card:#ffffff; --ink:#2b2a33; --muted:#6d6a78; --line:#e8e2d4;
+  --accent:#3b6fb6; --accent-soft:#e6eefa; --good:#2e8b57; --good-soft:#e3f4ea;
+  --bad:#c0392b; --bad-soft:#fbe7e4; --gold:#d99a1e; --gold-soft:#fff3d6;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Segoe UI","Noto Sans","Noto Sans Bengali","Kalpurush","Siyam Rupali","Nirmala UI","Vrinda",Arial,sans-serif;line-height:1.55;font-size:16px}
+.bn{font-family:"Noto Sans Bengali","Kalpurush","Siyam Rupali","Nirmala UI","Vrinda","Segoe UI",sans-serif}
+header{background:linear-gradient(135deg,#eaf1fb,#fdf3dc);border-bottom:1px solid var(--line);padding:18px 16px 0}
+.wrap{max-width:980px;margin:0 auto}
+h1{margin:0 0 2px;font-size:1.5rem;color:#274a7c}
+.sub{margin:0 0 12px;color:var(--muted);font-size:.92rem}
+nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:0}
+nav button{border:1px solid transparent;border-bottom:none;background:transparent;padding:10px 16px;font-size:.95rem;cursor:pointer;color:var(--muted);border-radius:10px 10px 0 0;white-space:nowrap;font-family:inherit}
+nav button.on{background:var(--bg);color:var(--accent);font-weight:600;border-color:var(--line)}
+nav button .cnt{background:var(--gold);color:#fff;border-radius:10px;padding:0 7px;font-size:.75rem;margin-left:4px}
+main{max-width:980px;margin:0 auto;padding:18px 14px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px;box-shadow:0 1px 3px rgba(60,50,20,.05)}
+.q-text{font-family:Georgia,"Times New Roman",serif;font-size:1.1rem;color:#222;margin:0 0 6px;white-space:pre-line}
+.q-bn{color:#4a4756;margin:0 0 8px;font-size:.98rem}
+.meta{font-size:.88rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.who{color:#1d5a3a;background:var(--good-soft);padding:2px 10px;border-radius:12px;font-weight:600}
+.src{color:var(--accent);background:var(--accent-soft);padding:2px 10px;border-radius:12px}
+.note{color:#8a6410;background:var(--gold-soft);padding:2px 10px;border-radius:12px}
+.bm{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:20px;padding:4px 12px;cursor:pointer;font-size:.85rem;color:var(--muted);font-family:inherit}
+.bm.on{background:var(--gold-soft);border-color:var(--gold);color:#8a6410;font-weight:600}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+input[type=text],select{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:.95rem;font-family:inherit;color:var(--ink)}
+input[type=text]{flex:1;min-width:200px}
+.btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:.98rem;cursor:pointer;font-family:inherit}
+.btn:hover{background:#2f5a96}
+.btn.alt{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+.btn.danger{background:var(--bad)}
+.btn:disabled{opacity:.45;cursor:default}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.row label{font-size:.9rem;color:var(--muted);min-width:90px}
+.opt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:11px 14px;margin:8px 0;cursor:pointer;font-size:1rem;font-family:inherit;color:var(--ink)}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default}
+.progress{height:8px;background:#ece6d6;border-radius:8px;overflow:hidden;margin:6px 0 14px}
+.progress>div{height:100%;background:var(--accent);transition:width .25s}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;background:var(--accent-soft);color:var(--accent);font-size:.82rem;margin-right:6px}
+.qtype{font-weight:600;color:#274a7c;margin-bottom:8px}
+.pal{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.pal button{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:.85rem;font-family:inherit}
+.pal button.done{background:var(--accent-soft);border-color:var(--accent)}
+.pal button.cur{outline:2px solid var(--gold)}
+.timer{font-weight:700;color:var(--bad);font-variant-numeric:tabular-nums}
+.score{font-size:2.2rem;font-weight:700;color:var(--accent)}
+.feedback{margin-top:10px;padding:10px 14px;border-radius:10px}
+.feedback.ok{background:var(--good-soft);color:#1d5a3a}
+.feedback.no{background:var(--bad-soft);color:#8a2a20}
+.empty{text-align:center;color:var(--muted);padding:40px 10px}
+.story h3{margin:0 0 4px;color:#274a7c}
+.story .by{color:var(--muted);font-size:.88rem;margin-bottom:8px}
+.story p{margin:6px 0}
+.story .lbl{font-weight:700;color:#8a6410}
+details.story summary{cursor:pointer;list-style:none}
+details.story summary::-webkit-details-marker{display:none}
+details.story summary h3::after{content:" ▾";font-size:.8rem;color:var(--muted)}
+.small{font-size:.85rem;color:var(--muted)}
+.flash{text-align:center;padding:26px 18px}
+.flash .q-text{font-size:1.25rem}
+@media(max-width:560px){h1{font-size:1.25rem}.card{padding:14px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>BCS Famous Quotations</h1>
+    <p class="sub">Quotations from Drama / Poetry of different ages &middot; Works offline</p>
+    <nav id="nav">
+      <button data-v="browse" class="on">All Quotes</button>
+      <button data-v="practice">Practice</button>
+      <button data-v="exam">Exam</button>
+      <button data-v="bookmarks">Bookmarks <span class="cnt" id="bmcnt">0</span></button>
+      <button data-v="stories" class="bn">গল্প সারাংশ</button>
+    </nav>
+  </div>
+</header>
+<main id="app"></main>
+
+<script>
+/* ---------------- DATA ---------------- */
+const RAW=[];
+function G(a,s,items){items.forEach(i=>RAW.push({a:a,s:s,q:i[0],c:i[1]||"",b:i[2]||"",n:i[3]||""}));}
+const SH="William Shakespeare";
+
+G(SH,"King Lear",[
+["I am a man more sinned against than sinning.","King Lear","আমি যতটা অন্যায় করেছি তার চেয়ে বেশি অন্যায় আমার প্রতি করা হয়েছে।"],
+["My love is richer than my tongue.","Cordelia","আমার ভালোবাসা মুখে বোঝানো সম্ভব নয়।","Hyperbole"],
+["Nothing will come of nothing.","King Lear to Cordelia","শূন্য থেকে কিছুই আসে না।"],
+["How sharper than a serpent's tooth it is to have a thankless child!","King Lear","অকৃতজ্ঞ সন্তান সাপের বিষদাঁতের চেয়েও তীক্ষ্ণ।"],
+["Unhappy that I am, I cannot heave my heart into my mouth. I love your majesty according to my bond, no more nor less.","Cordelia to King Lear","আমি দুর্ভাগা, মনের কথা মুখে বলতে পারি না; কর্তব্যের বন্ধনে আপনাকে ভালোবাসি—কমও নয়, বেশিও নয়।"],
+["As flies to wanton boys are we to the gods; they kill us for their sport.","Gloucester","দুষ্টু ছেলেদের কাছে মাছি যেমন, দেবতাদের কাছে আমরা তেমন; তারা খেলার ছলে আমাদের মারে।"],
+["Ingratitude, thou marble-hearted fiend, more hideous when thou show'st thee in a child than the sea-monster!","King Lear to Goneril","অকৃতজ্ঞতা, পাষাণহৃদয় দানব! সন্তানের মধ্যে তুমি সমুদ্র-দানবের চেয়েও ভয়ংকর।"],
+["Here I stand, your slave, a poor, infirm, weak, and despised old man.","King Lear","এই দাঁড়িয়ে আছি আমি তোমাদের দাস—দরিদ্র, জরাগ্রস্ত, দুর্বল ও ঘৃণিত এক বৃদ্ধ।"],
+["Men must endure their going hence even as their coming hither; ripeness is all.","Edgar to Gloucester","আসার মতো যাওয়াও মানুষকে সহ্য করতে হয়; পরিপক্বতাই সব।"],
+["Come, let's away to prison; we two alone will sing like birds i' th' cage.","King Lear to Cordelia","এসো, কারাগারে যাই; খাঁচার পাখির মতো আমরা দুজন গান গাইব।"],
+["When we are born, we cry that we are come to this great stage of fools.","King Lear","জন্মের সময় আমরা কাঁদি, কারণ বোকাদের এই বিশাল মঞ্চে এসে পড়েছি।"],
+["Have more than thou showest, speak less than thou knowest, lend less than thou owest.","Fool","যা দেখাও তার চেয়ে বেশি রাখো, যা জানো তার চেয়ে কম বলো, যা ঋণ নাও তার চেয়ে কম ধার দাও।"]
+]);
+
+G(SH,"Hamlet",[
+["Frailty, thy name is woman.","Prince Hamlet","দুর্বলতা, তোমার নাম নারী।"],
+["There is nothing either good or bad, but thinking makes it so.","Prince Hamlet","ভালো-মন্দ বলে কিছু নেই, চিন্তাই তাকে তেমন করে তোলে।"],
+["Brevity is the soul of wit.","Polonius to Claudius","সংক্ষিপ্ততা বুদ্ধিমত্তার প্রাণ।"],
+["To be or not to be, that is the question.","Prince Hamlet","বাঁচব, নাকি বাঁচব না—এটাই প্রশ্ন। (মানবমনের সিদ্ধান্তহীনতার প্রকাশ)","Soliloquy"],
+["A little more than kin, and less than kind.","Prince Hamlet","আত্মীয়ের চেয়ে একটু বেশি, কিন্তু সদৃশ স্বভাবের তুলনায় কম।"],
+["I will speak daggers to her, but use none.","Prince Hamlet","আমি তাকে কথার ছুরিতে বিদ্ধ করব, অস্ত্র ব্যবহার করব না।"],
+["When sorrows come, they come not single spies, but in battalions.","Claudius to Gertrude","দুঃখ যখন আসে, একা আসে না—দল বেঁধে আসে।"],
+["There are more things in heaven and earth than are dreamt of in your philosophy.","Prince Hamlet","স্বর্গ ও পৃথিবীতে এমন অনেক কিছু আছে যা তোমার দর্শনে স্বপ্নেও আসেনি।"],
+["I must be cruel only to be kind; thus bad begins and worse remains behind.","Prince Hamlet","দয়ালু হওয়ার জন্যই আমাকে নিষ্ঠুর হতে হবে; মন্দ শুরু হয়েছে, আরও মন্দ বাকি।"],
+["O God! O God! How weary, stale, flat and unprofitable seem to me all the uses of this world.","Prince Hamlet","হে ঈশ্বর! এই পৃথিবীর সবকিছু কত ক্লান্তিকর, বিরক্তিকর ও অর্থহীন মনে হয়!"],
+["What is a man, if his chief good and market of his time be but to sleep and feed? A beast, no more.","Prince Hamlet","ঘুম আর খাওয়াই যদি জীবনের শ্রেষ্ঠ লাভ হয়, তবে মানুষ আর পশুতে তফাৎ কী?"],
+["Give every man thine ear, but few thy voice; take each man's censure, but reserve thy judgment.","Polonius to Laertes","সবার কথা শোনো, কিন্তু কম লোকের সঙ্গে বলো; সবার সমালোচনা শোনো, কিন্তু নিজের বিচার নিজের কাছে রাখো।"],
+["One step forward and two steps backward.","","এক পা এগোলে দু পা পিছোনো।"],
+["Forty thousand brothers could not with all their quantity of love make up my sum.","Prince Hamlet","চল্লিশ হাজার ভাইয়ের সব ভালোবাসা মিলেও আমার ভালোবাসার সমান হবে না।","Hyperbole"],
+["All that live must die, passing through nature to eternity.","Gertrude to Hamlet","যে বেঁচে আছে তাকেই মরতে হবে—প্রকৃতির পথ ধরে অনন্তে যেতে হবে।"],
+["Neither a borrower nor a lender be; for loan oft loses both itself and friend.","Polonius to Laertes","ঋণ নিয়ো না, ঋণ দিয়ো না; কারণ ঋণে টাকা ও বন্ধু দুটোই হারায়।"],
+["We know what we are, but know not what we may be.","Ophelia to Claudius","আমরা এখন কী তা জানি, কিন্তু ভবিষ্যতে কী হতে পারি তা জানি না।"],
+["God hath given you one face and you make yourself another.","Ophelia to Claudius","ঈশ্বর তোমাকে একটি মুখ দিয়েছেন, আর তুমি নিজেকে আরেকটি বানিয়ে নিয়েছ।"]
+]);
+
+G(SH,"Macbeth",[
+["Fair is foul, and foul is fair.","Three Witches","ভালো মন্দ, আবার মন্দও ভালো।","Alliteration"],
+["Here's the smell of blood still. All the perfumes of Arabia will not sweeten this little hand.","Lady Macbeth","এখনো রক্তের গন্ধ আছে। আরবের সব সুগন্ধি এই ছোট্ট হাতকে সুবাসিত করতে পারবে না।","Hyperbole"],
+["Life is a tale told by an idiot, full of sound and fury, signifying nothing.","Macbeth","জীবন এক নির্বোধের বলা গল্প—শব্দ ও উত্তেজনায় ভরা, অর্থহীন।","Metaphor"],
+["Life's but a walking shadow.","Macbeth","জীবন চলমান ছায়া ছাড়া আর কিছু নয়।"],
+["There's daggers in men's smiles.","Donalbain to Malcolm","মানুষের হাসির মধ্যেই ছুরি লুকিয়ে আছে।"],
+["Your face, my thane, is as a book where men may read strange matters.","Lady Macbeth","আপনার মুখ যেন এক বই, যেখানে মানুষ বিস্ময়কর সব কথা পড়তে পারে।","Simile"],
+["I have bought golden opinions from all sorts of people.","Macbeth","আমি সব শ্রেণির মানুষের কাছ থেকে সোনালি সুনাম কিনেছি।"],
+["There's no art to find the mind's construction in the face.","King Duncan","মুখ দেখে মনের গঠন বোঝার কোনো কৌশল নেই।"],
+["Look like the innocent flower, but be the serpent under it.","Lady Macbeth to Macbeth","নিষ্পাপ ফুলের মতো দেখাও, কিন্তু তার নিচে সাপ হয়ে থাকো।"]
+]);
+
+G(SH,"Romeo and Juliet",[
+["If love be blind, it best agrees with night.","Juliet","ভালোবাসা যদি অন্ধ হয়, তবে রাতের সঙ্গেই তার মিল সবচেয়ে ভালো।"],
+["It is the east, and Juliet is the sun.","Romeo","ওটা পূর্বদিক, আর জুলিয়েট সূর্য।"],
+["For you and I are past our dancing days.","Capulet","তুমি আর আমি আমাদের নাচের দিন পেরিয়ে এসেছি।"],
+["Tempt not a desperate man.","Romeo","মরিয়া মানুষকে প্ররোচিত কোরো না।"],
+["What light through yonder window breaks?","Romeo","ওই জানালা ভেদ করে কী আলো ফুটে উঠছে?","Soliloquy"],
+["These violent delights have violent ends.","Friar Lawrence to Romeo","প্রচণ্ড আনন্দের পরিণতিও প্রচণ্ড (ধ্বংসাত্মক) হয়।"],
+["Love is a smoke made with the fume of sighs.","Romeo","ভালোবাসা দীর্ঘশ্বাসের ধোঁয়া থেকে তৈরি এক ধোঁয়া।"]
+]);
+
+G(SH,"A Midsummer Night's Dream",[
+["The course of true love never did run smooth.","Lysander to Hermia","সত্যিকারের ভালোবাসার পথ কখনো মসৃণ হয় না।"],
+["Love looks not with the eyes, but with the mind.","Helena","ভালোবাসা চোখ দিয়ে দেখে না, মন দিয়ে দেখে।"],
+["My soul is in the sky.","Pyramus","আমার আত্মা আকাশে।"],
+["Take pains, be perfect.","Nick Bottom","কষ্ট করো, নিখুঁত হও।"]
+]);
+
+G(SH,"Julius Caesar",[
+["Cowards die many times before their deaths; the valiant never taste of death but once.","Julius Caesar to Calpurnia","ভীরুরা মৃত্যুর আগে বহুবার মরে; সাহসীরা মরে মাত্র একবার।","Paradox"],
+["Veni, Vidi, Vici.","Julius Caesar","এলাম, দেখলাম, জয় করলাম।","Climax"]
+]);
+
+G(SH,"King Henry",[
+["Uneasy lies the head that wears a crown.","King Henry","যে মাথায় মুকুট থাকে, সে মাথা শান্তিতে ঘুমাতে পারে না।"],
+["Men of few words are the best men.","Henry V","স্বল্পভাষী মানুষই উত্তম মানুষ।"],
+["A man can die but once.","Feeble","মানুষ মরে কেবল একবারই।"]
+]);
+
+G(SH,"Twelfth Night",[
+["Be not afraid of greatness: some are born great, some achieve greatness, and some have greatness thrust upon them.","Malvolio","খ্যাতি নিয়ে ভয় পেয়ো না: কেউ খ্যাতিমান হয়ে জন্মায়, কেউ খ্যাতি অর্জন করে, কারো ওপর খ্যাতি চাপিয়ে দেওয়া হয়।"],
+["If music be the food of love, play on.","Duke Orsino","সংগীত যদি ভালোবাসার খাদ্য হয়, তবে বাজাও।"],
+["Love sought is good, but given unsought is better.","Olivia","খুঁজে নেওয়া ভালোবাসা ভালো, কিন্তু না চাইতে পাওয়া আরও ভালো।"],
+["Better a witty fool than a foolish wit.","Feste","বোকা প্রজ্ঞাবান হওয়ার চেয়ে প্রজ্ঞাবান বোকা হওয়া উত্তম।"]
+]);
+
+G(SH,"As You Like It",[
+["All the world's a stage, and all the men and women merely players.","Jaques","সমগ্র পৃথিবীটাই রঙ্গমঞ্চ, আর সকল নর-নারী সেখানকার অভিনেতা-অভিনেত্রী।"],
+["Sweet are the uses of adversity.","Duke Senior","দুর্দশার ব্যবহার মধুর (দুর্যোগেও কল্যাণ নিহিত)।"],
+["To the last gasp with truth and loyalty.","Adam","শেষ নিঃশ্বাস পর্যন্ত সত্য ও আনুগত্যের সঙ্গে।"],
+["I'll have no husband, if you be not he.","Rosalind to Orlando","তুমি না হলে আমার কোনো স্বামী থাকবে না।"],
+["Love is merely a madness.","Rosalind","ভালোবাসা উন্মাদনা ছাড়া আর কিছু নয়।"],
+["How bitter a thing it is to look into happiness through another man's eyes!","Orlando","অন্যের চোখ দিয়ে সুখ দেখা কতই না তিক্ত!"],
+["We have seen better days.","Jaques","আমরা ভালো দিন দেখেছি।"]
+]);
+
+G(SH,"Sonnet 18",[
+["And every fair from fair sometime declines, by chance, or nature's changing course, untrimmed.","","প্রতিটি সৌন্দর্যই কোনো এক সময় ম্লান হয়—দৈবক্রমে বা প্রকৃতির পরিবর্তনশীল নিয়মে।"]
+]);
+
+G(SH,"Measure for Measure",[
+["The miserable have no other medicine but only hope.","Claudio","হতভাগ্যদের আশা ছাড়া আর কোনো ওষুধ নেই।"],
+["Some rise by sin, and some by virtue fall.","Escalus to Angelo","কেউ পাপে ওঠে, আবার কেউ পুণ্যে পতিত হয়।"],
+["Our doubts are traitors, and make us lose the good we oft might win by fearing to attempt.","Lucio to Isabella","সন্দেহ বিশ্বাসঘাতক; চেষ্টা করতে ভয় পেয়ে আমরা অনেক সময় জয়ের সুযোগ হারাই।"],
+["O faithless coward, O dishonest wretch! Wilt thou be made a man out of my vice? Is't not a kind of incest to take life from thine own sister's shame?","Isabella to Claudio","হে অবিশ্বাসী কাপুরুষ, অসৎ নীচ! আমার কলঙ্ক দিয়ে তুই জীবন কিনবি?"],
+["Condemn the fault and not the actor of it.","Angelo","দোষের নিন্দা করো, দোষীর নয়।"]
+]);
+
+G(SH,"Othello",[
+["She loved me for the dangers I had passed.","Othello","আমি যেসব বিপদ পার হয়েছি, সেজন্য সে আমাকে ভালোবেসেছে।"],
+["And I loved her that she did pity them.","Othello","আর সে আমার সেই বিপদের জন্য করুণা করেছিল বলে আমি তাকে ভালোবেসেছি।"],
+["I am one that loved not wisely but too well.","Othello","আমি এমন একজন যে বিবেচনা করে নয়, কিন্তু অতিরিক্ত গভীরভাবে ভালোবেসেছে।"],
+["O, you are well tuned now! But I'll set down the pegs that make this music, as honest as I am.","Iago","বাহ, এখন তো বেশ সুর বেঁধেছ! কিন্তু আমি এই সুরের তার ঢিলা করে দেব।"]
+]);
+
+G(SH,"The Tempest",[
+["Awake, dear heart, awake! Thou hast slept well. Awake!","Prospero","জাগো, প্রিয় হৃদয়, জাগো! তুমি ভালো ঘুমিয়েছ। জাগো!"],
+["Good wombs have borne bad sons.","Miranda","ভালো গর্ভও মন্দ সন্তান জন্ম দিয়েছে।"],
+["Your tale, sir, would cure deafness.","Miranda","স্যার, আপনার কাহিনি বধিরতাও সারিয়ে দেবে।"],
+["I am your wife if you will marry me.","Miranda to Ferdinand","আপনি বিয়ে করলে আমি আপনার স্ত্রী।"],
+["I would not wish any companion in the world but you.","Miranda","আপনি ছাড়া এই পৃথিবীতে আমি আর কোনো সঙ্গী চাই না।"],
+["Misery acquaints a man with strange bedfellows.","Trinculo","দুর্দশা মানুষকে অদ্ভুত সঙ্গীর সঙ্গে পরিচয় করিয়ে দেয়।"],
+["Never till this day saw I him touched with anger so distempered.","","আজকের আগে কখনো তাকে এমন রাগান্বিত দেখিনি।"],
+["I will die and I will never return.","","আমি মরব, আর কখনো ফিরব না।"]
+]);
+
+G(SH,"The Merchant of Venice",[
+["All that glitters is not gold.","Prince of Morocco to Portia","চকচক করলেই সোনা হয় না।"],
+["But love is blind, and lovers cannot see the pretty follies that themselves commit.","Jessica to Lorenzo","ভালোবাসা অন্ধ; প্রেমিক-প্রেমিকা নিজেদের মধুর বোকামিগুলো দেখতে পায় না।"],
+["Love is blind, lovers cannot see.","Jessica","ভালোবাসা অন্ধ, প্রেমিকরা দেখতে পায় না।"],
+["It is a wise father that knows his own child.","Launcelot","সেই পিতাই জ্ঞানী যিনি নিজের সন্তানকে চেনেন।"],
+["The devil can cite Scripture for his purpose.","Antonio","স্বার্থসিদ্ধির জন্য শয়তানও ধর্মগ্রন্থের উদ্ধৃতি দিতে পারে।"],
+["The sins of the father are to be laid upon the children.","Launcelot to Jessica","পিতার পাপ সন্তানদের ওপর বর্তায়।"]
+]);
+
+G(SH,"All's Well That Ends Well",[
+["All's well that ends well.","Helena","শেষ ভালো যার, সব ভালো তার।"],
+["Love all, trust a few, do wrong to none.","Countess of Roussillon","সবাইকে ভালোবাসো, অল্প কয়েকজনকে বিশ্বাস করো, কারো প্রতি অন্যায় কোরো না।"],
+["A young man married is a man that's married.","","অল্প বয়সে বিয়ে যুবকের ক্ষতি করে।"]
+]);
+
+G(SH,"Antony and Cleopatra",[
+["My salad days, when I was green in judgment.","Cleopatra to Julius Caesar","আমার সেই কাঁচা (সবুজ) দিনগুলো, যখন বিচারবুদ্ধি অপরিপক্ব ছিল।"],
+["There is beggary in the love that can be reckoned.","Antony","যে ভালোবাসা মাপা যায়, তা ভিক্ষুকের মতো দীন।"]
+]);
+
+G(SH,"Timon of Athens",[
+["We have seen better days.","Flavius","আমরা ভালো দিন দেখেছি। (এটি As You Like It, Act II, Sc. VII-এও আছে)"],
+["Life is an uncertain voyage.","Timon","জীবন এক অনিশ্চিত সমুদ্রযাত্রা।"]
+]);
+
+G(SH,"Coriolanus",[["Nature teaches beasts to know their friends.","","প্রকৃতি পশুকেও বন্ধু চিনতে শেখায়।"]]);
+G(SH,"Troilus and Cressida",[["The common curse of mankind, folly and ignorance.","","মানবজাতির সাধারণ অভিশাপ হলো নির্বুদ্ধিতা ও অজ্ঞতা।"]]);
+G(SH,"Two Gentlemen of Verona",[["Home-keeping youth have ever homely wits.","","ঘরে বসে থাকা যুবকদের বুদ্ধিও ঘরোয়া হয়।"]]);
+
+G("Christopher Marlowe","Dr. Faustus",[
+["Fools that will laugh on earth, most weep in hell.","","যে বোকারা পৃথিবীতে হাসে, নরকে তাদের বেশি কাঁদতে হয়।"],
+["Make me immortal with a kiss.","","এক চুম্বনে আমাকে অমর করে দাও।"],
+["Had I as many souls as there be stars, I'd give them all for Mephistophilis.","","আকাশে যত তারা আছে, আমার যদি তত আত্মা থাকত, সবই মেফিস্টোফিলিসের জন্য দিতাম।"]
+]);
+G("Christopher Marlowe","The Jew of Malta",[
+["The stars move still, time runs, the clock will strike.","","তারারা চলতেই থাকে, সময় বয়ে যায়, ঘড়ি বাজবেই।"],
+["There is no sin but ignorance.","","অজ্ঞতা ছাড়া কোনো পাপ নেই।"]
+]);
+
+G("Francis Bacon","Of Studies",[
+["Studies serve for delight, for ornament, and for ability.","","অধ্যয়ন আনন্দ, সম্মান ও কর্মদক্ষতা দেয়।"],
+["Some books are to be tasted, others to be swallowed, and some few to be chewed and digested.","","কিছু বই চেখে দেখতে হয়, কিছু গিলতে হয়, আর অল্প কিছু চিবিয়ে হজম করতে হয়।"],
+["History maketh men wise.","","ইতিহাস মানুষকে জ্ঞানী করে।"],
+["Wonder is the seed of knowledge.","","বিস্ময় জ্ঞানের বীজ।"],
+["Reading maketh a full man, conference a ready man, and writing an exact man.","","পাঠ মানুষকে পূর্ণ করে, আলোচনা দক্ষ করে, লেখা নির্ভুল করে।"],
+["Read not to contradict and confute; nor to believe and take for granted; nor to find talk and discourse; but to weigh and consider.","","বিরোধিতা বা বিশ্বাসের জন্য নয়, কথা বলার খোরাকের জন্যও নয়—পড়ো যাচাই ও বিবেচনার জন্য।"]
+]);
+G("Francis Bacon","Of Marriage and Single Life",[
+["Wives are young men's mistresses, companions for middle age, and old men's nurses.","","স্ত্রী যুবকদের প্রণয়িনী, মধ্যবয়সীদের সঙ্গিনী ও বৃদ্ধদের সেবিকা।"],
+["Unmarried men are best friends, best masters, best servants; but not always best subjects.","","অবিবাহিত পুরুষ সেরা বন্ধু, সেরা মনিব, সেরা ভৃত্য; কিন্তু সর্বদা নির্ভরযোগ্য প্রজা নয়।"],
+["A bachelor's life is a fine breakfast, a flat lunch and a miserable dinner.","","অবিবাহিতের জীবন সুন্দর প্রাতরাশ, নীরস দুপুরের খাবার ও দুঃখজনক রাতের খাবার।"],
+["Hope is a good breakfast, but it is a bad supper.","","আশা ভালো প্রাতরাশ, কিন্তু খারাপ নৈশভোজ।"],
+["Certainly wife and children are a kind of discipline of humanity.","","স্ত্রী-সন্তান মানবতার এক ধরনের শিক্ষা।"]
+]);
+G("Francis Bacon","Of Truth",[
+["A mixture of lie doth ever add pleasure.","","সত্যের সঙ্গে মিথ্যার মিশ্রণ সর্বদা আনন্দ বাড়ায়।"],
+["The secret of success is constancy of purpose.","","সাফল্যের গোপন চাবিকাঠি লক্ষ্যে অবিচলতা।"],
+["Silence is the sleep that nourishes wisdom.","","নীরবতা সেই ঘুম যা প্রজ্ঞাকে পুষ্ট করে।"],
+["In order for the light to shine so brightly, the darkness must be present.","","আলো এত উজ্জ্বল হতে হলে অন্ধকার থাকতেই হবে।"]
+]);
+G("Francis Bacon","Of Friendship",[["A good friend is another himself.","","ভালো বন্ধু নিজেরই আরেক সত্তা।"]]);
+G("Francis Bacon","Of Revenge",[["Revenge is a kind of wild justice.","","প্রতিশোধ এক ধরনের বন্য ন্যায়বিচার।"]]);
+G("Francis Bacon","Of Love",[["It is impossible to love and to be wise.","","প্রেমে পড়ে জ্ঞানী থাকা অসম্ভব।"]]);
+G("Francis Bacon","Of Death",[["Men fear death as children fear to go in the dark.","","শিশুরা অন্ধকারকে যেমন ভয় পায়, মানুষ তেমন মৃত্যুকে ভয় পায়।"]]);
+G("Francis Bacon","Of Suspicion",[["Suspicions amongst thoughts are like bats amongst birds; they ever fly by twilight.","","চিন্তার মধ্যে সন্দেহ পাখিদের মধ্যে বাদুড়ের মতো; তারা গোধূলিতে ওড়ে।"]]);
+G("Francis Bacon","A Letter of Advice to the Earl of Essex",[["Opportunity makes a thief.","","সুযোগ মানুষকে চোর বানায়।"]]);
+G("Francis Bacon","The Essays",[
+["A wise man will make more opportunities than he finds.","","জ্ঞানী ব্যক্তি যত সুযোগ পায় তার চেয়ে বেশি সুযোগ তৈরি করে।"],
+["Money is a great servant but a bad master.","","অর্থ ভালো ভৃত্য, কিন্তু খারাপ মনিব।"],
+["Knowledge itself is power.","","জ্ঞান নিজেই শক্তি।"],
+["I would live to study, and not study to live.","","আমি পড়ার জন্য বাঁচব, বাঁচার জন্য পড়ব না।"],
+["I will never be an old man.","","আমি কখনো বৃদ্ধ হব না।"]
+]);
+G("Francis Bacon","Of Travel",[["Travel, in the younger sort, is a part of education; in the elder, a part of experience.","","তরুণদের জন্য ভ্রমণ শিক্ষার অংশ, বয়স্কদের জন্য অভিজ্ঞতার অংশ।"]]);
+
+G("P. B. Shelley","Ode to the West Wind",[
+["If winter comes, can spring be far behind?","","শীত এলে বসন্ত কি আর বেশি দূরে থাকে?"],
+["Oh! lift me as a wave, a leaf, a cloud! I fall upon the thorns of life!","","আমাকে তরঙ্গ, পাতা বা মেঘের মতো তুলে নাও! জীবনের কাঁটায় আমি পড়ে আছি!"],
+["Drive my dead thoughts over the universe.","","আমার মৃত চিন্তাগুলোকে বিশ্বজুড়ে ছড়িয়ে দাও।"]
+]);
+G("P. B. Shelley","Ode to a Skylark",[
+["Our sweetest songs are those that tell of saddest thought.","","আমাদের মধুরতম গান সেগুলোই যা সবচেয়ে বিষণ্ণ ভাবনার কথা বলে।"],
+["We look before and after, and pine for what is not.","","আমরা অতীত ও ভবিষ্যতের দিকে তাকাই, আর যা নেই তার জন্য আকুল হই।"]
+]);
+G("P. B. Shelley","Ozymandias",[["My name is Ozymandias, King of Kings.","","আমার নাম ওজিমান্ডিয়াস, রাজাধিরাজ।"]]);
+G("P. B. Shelley","A Defence of Poetry",[
+["Poets are the unacknowledged legislators of the world.","","কবিরা বিশ্বের অস্বীকৃত আইন-প্রণেতা।"],
+["Poetry is a mirror which makes beautiful that which is distorted.","","কবিতা এমন দর্পণ যা বিকৃতকে সুন্দর করে তোলে।"]
+]);
+G("P. B. Shelley","Queen Mab",[
+["Fear not for the future, weep not for the past.","","ভবিষ্যৎ নিয়ে ভয় কোরো না, অতীত নিয়ে কেঁদো না।"],
+["Soul meets soul on lovers' lips.","","প্রেমিক-প্রেমিকার ঠোঁটে আত্মায় আত্মায় মিলন হয়।"]
+]);
+G("P. B. Shelley","The Cloud",[["I am the daughter of Earth and Water, and the nursling of the Sky.","","আমি পৃথিবী ও জলের কন্যা, আকাশের আদরের সন্তান।"]]);
+G("P. B. Shelley","The Revolt of Islam",[["The more we study, the more we discover our ignorance.","","যত পড়ি তত নিজের অজ্ঞতা আবিষ্কার করি।"]]);
+
+G("William Wordsworth","I Wandered Lonely as a Cloud (Daffodils)",[
+["I wandered lonely as a cloud that floats on high o'er vales and hills.","","আমি মেঘের মতো একা ঘুরছিলাম যা উপত্যকা ও পাহাড়ের ওপর ভেসে যায়।"],
+["All at once I saw a crowd, a host of golden daffodils; ten thousand saw I at a glance, tossing their heads in sprightly dance.","","হঠাৎ দেখলাম সোনালি ড্যাফোডিলের ভিড়; এক নজরে দশ হাজার ফুল প্রাণবন্ত নাচে মাথা দোলাচ্ছে।","Hyperbole"]
+]);
+G("William Wordsworth","My Heart Leaps Up",[["The Child is father of the Man.","","শিশুই মানুষের পিতা।","Paradox"]]);
+G("William Wordsworth","Tintern Abbey",[["Nature never did betray the heart that loved her.","","প্রকৃতিকে যে হৃদয় ভালোবাসে, প্রকৃতি কখনো তার সঙ্গে বিশ্বাসঘাতকতা করে না।"]]);
+G("William Wordsworth","Preface to Lyrical Ballads",[
+["Poetry is the spontaneous overflow of powerful feelings.","","কবিতা প্রবল আবেগের স্বতঃস্ফূর্ত বহিঃপ্রকাশ।"],
+["The best portion of a good man's life, his little, nameless, unremembered acts of kindness and love.","","সজ্জনের জীবনের শ্রেষ্ঠ অংশ হলো তাঁর ছোট, নামহীন, বিস্মৃত দয়া ও ভালোবাসার কাজগুলো।"],
+["Poetry is the breath and finer spirit of all knowledge.","","কবিতা সমস্ত জ্ঞানের প্রাণ ও সূক্ষ্ম চেতনা।"]
+]);
+G("William Wordsworth","The Solitary Reaper",[
+["The music in my heart I bore, long after it was heard no more.","","সেই সুর বহুদিন হৃদয়ে বয়ে বেড়ালাম, যদিও তা আর শোনা যাচ্ছিল না।"],
+["Behold her, single in the field, yon solitary Highland Lass!","","দেখো, মাঠে একা ওই নির্জন পার্বত্য তরুণীকে!"],
+["Every great poet is a teacher.","","প্রত্যেক মহাকবিই একজন শিক্ষক।"]
+]);
+G("William Wordsworth","The Tables Turned",[["Come forth into the light of things, let Nature be your teacher.","","বস্তুর আলোয় বেরিয়ে এসো, প্রকৃতিকে শিক্ষক বানাও।"]]);
+G("William Wordsworth","Ode: Intimations of Immortality",[["Our birth is but a sleep and a forgetting.","","আমাদের জন্ম এক ঘুম ও বিস্মরণ মাত্র।"]]);
+G("William Wordsworth","Waggoner and Other Works",[["Faith is a passionate intuition.","","বিশ্বাস হলো আবেগময় অন্তর্দৃষ্টি।"]]);
+
+G("Sir Philip Sidney","An Apology for Poetry",[
+["Poetry, a speaking picture, to teach and delight.","","কবিতা এক জীবন্ত ছবি, যা শেখায় ও আনন্দ দেয়।"],
+["Either I will find a way, or I will make one.","","হয় আমি পথ খুঁজে নেব, নয়তো নতুন পথ তৈরি করব।"]
+]);
+
+G("John Donne","The Canonization",[
+["For God's sake, hold your tongue and let me love.","","ঈশ্বরের দোহাই, চুপ করো আর আমাকে ভালোবাসতে দাও।"],
+["Soldiers find wars, and lawyers find out still litigious men, which quarrels move, though she and I do love.","","সৈনিকরা যুদ্ধ খোঁজে, আইনজীবীরা মামলাবাজ খোঁজে; তবু আমরা দুজন ভালোবাসি।"]
+]);
+G("John Donne","The Good Morrow",[
+["I wonder, by my troth, what thou and I did, till we loved?","","সত্যিই অবাক হই, ভালোবাসার আগে তুমি আর আমি কী করতাম?"],
+["For love, all love of other sights controls, and makes one little room an everywhere.","","ভালোবাসা অন্য সব দৃশ্যের ভালোবাসা সামলায়, আর একটি ছোট ঘরকে সর্বত্র বানিয়ে দেয়।"]
+]);
+G("John Donne","A Valediction: Forbidding Mourning",[["If they be two, they are two so as stiff twin compasses are two.","","তারা যদি দুজনও হয়, তবে যুগল কম্পাসের দুই পায়ের মতো (অবিচ্ছেদ্য)।"]]);
+G("John Donne","The Sun Rising",[
+["She's all states, and all princes I; nothing else is.","","সে-ই আমার সমস্ত রাষ্ট্র, আমিই সব রাজা; আর কিছুই নেই।"],
+["Love, all alike, no season knows, nor clime, nor hours, days, months, which are the rags of time.","","ভালোবাসা সবার জন্য সমান; ঋতু, দেশ, ঘণ্টা-দিন-মাস—সময়ের এই ছেঁড়া কাপড় সে মানে না।"],
+["This bed thy centre is, these walls thy sphere.","","এই বিছানাই তোমার কেন্দ্র, এই দেয়ালগুলোই তোমার কক্ষপথ।"]
+]);
+
+G("John Keats","Ode on a Grecian Urn",[
+["Heard melodies are sweet, but those unheard are sweeter.","","শোনা সুর মধুর, কিন্তু না-শোনা সুর আরও মধুর।"],
+["Beauty is truth, truth beauty.","","সৌন্দর্যই সত্য, সত্যই সৌন্দর্য।"]
+]);
+G("John Keats","Endymion, Book I",[["A thing of beauty is a joy forever.","","সুন্দর বস্তু চিরকালের আনন্দ।"]]);
+G("John Keats","Ode to a Nightingale",[["My heart aches, and a drowsy numbness pains my sense, as though of hemlock I had drunk.","","আমার হৃদয় ব্যথিত, তন্দ্রাচ্ছন্ন অসাড়তা আমার ইন্দ্রিয়কে কষ্ট দিচ্ছে, যেন বিষ পান করেছি।"]]);
+G("John Keats","To George and Georgiana Keats",[["Nothing ever becomes real till it is experienced.","","অভিজ্ঞতা না হলে কিছুই বাস্তব হয় না।"]]);
+G("John Keats","Letter to Benjamin Bailey",[["Scenery is fine, but human nature is finer.","","প্রাকৃতিক দৃশ্য সুন্দর, কিন্তু মানবপ্রকৃতি আরও সুন্দর।"]]);
+
+G("S. T. Coleridge","The Rime of the Ancient Mariner",[
+["Water, water, everywhere, nor any drop to drink.","","চারদিকে শুধু পানি, অথচ পান করার এক ফোঁটাও নেই।","Alliteration"],
+["Alone, alone, all, all alone, alone on a wide wide sea.","","একা, একা, একেবারে একা, বিশাল সমুদ্রে একা।","Alliteration"],
+["He prayeth best who loveth best all things both great and small.","","যে ছোট-বড় সবকিছুকে সবচেয়ে বেশি ভালোবাসে, সে-ই সবচেয়ে ভালো প্রার্থনা করে।"]
+]);
+
+G("Thomas Gray","Elegy Written in a Country Churchyard",[
+["Full many a flower is born to blush unseen, and waste its sweetness on the desert air.","","অনেক ফুল অদেখা অবস্থায় ফোটে ও মরুভূমির বাতাসে তার সুবাস নষ্ট করে।"],
+["The paths of glory lead but to the grave.","","গৌরবের পথ কবরেই গিয়ে শেষ হয়।"]
+]);
+G("Thomas Gray","Ode on a Distant Prospect of Eton College",[["Where ignorance is bliss, 'tis folly to be wise.","","অজ্ঞতাই যেখানে পরম সুখ, সেখানে জ্ঞানী হওয়া বোকামি।"]]);
+
+G("Lord Alfred Tennyson","Ulysses",[
+["I cannot rest from travel; I will drink life to the lees.","","আমি ভ্রমণ থেকে বিশ্রাম নিতে পারব না; জীবনকে তলানি পর্যন্ত পান করব।"],
+["Who are wise in love, love most, say least.","","প্রেমে যারা জ্ঞানী, তারা বেশি ভালোবাসে, কম বলে।"],
+["Made weak by time and fate, but strong in will to strive, to seek, to find, and not to yield.","","সময় ও ভাগ্যে দুর্বল, কিন্তু ইচ্ছাশক্তিতে প্রবল—সংগ্রাম, অন্বেষণ, আবিষ্কার করতে; হার না মানতে।"]
+]);
+G("Lord Alfred Tennyson","Morte d'Arthur",[
+["The old order changeth, yielding place to new.","","পুরোনো নিয়ম বদলায়, নতুনকে জায়গা ছেড়ে দেয়।"],
+["More things are wrought by prayer than this world dreams of.","","এই পৃথিবী যা স্বপ্নেও ভাবে না, প্রার্থনায় তার চেয়ে বেশি কাজ সম্পন্ন হয়।"],
+["Authority forgets a dying king.","","মুমূর্ষু রাজাকে কর্তৃত্ব ভুলে যায়।"]
+]);
+G("Lord Alfred Tennyson","Locksley Hall",[["Knowledge comes, but wisdom lingers.","","জ্ঞান সহজে আসে, কিন্তু প্রজ্ঞা আসতে দেরি করে।"]]);
+G("Lord Alfred Tennyson","The Lotos-Eaters",[["Death is the end of life; ah, why should life all labour be?","","মৃত্যুই জীবনের শেষ; তাহলে জীবনকে কেন কেবল শ্রম হতে হবে?"]]);
+G("Lord Alfred Tennyson","In Memoriam",[
+["It is better to have loved and lost than never to have loved at all.","","একেবারে ভালো না বাসার চেয়ে ভালোবেসে হারানো ভালো।"],
+["Sorrows are the best educators.","","দুঃখই শ্রেষ্ঠ শিক্ষক।"],
+["A man can see farther through a tear than a telescope.","","দূরবীনের চেয়ে অশ্রুর ভেতর দিয়ে মানুষ আরও দূর দেখতে পায়।"]
+]);
+
+G("Alexander Pope","An Essay on Criticism",[
+["Fools rush in where angels fear to tread.","","দেবদূতরা যেখানে পা ফেলতে ভয় পায়, বোকারা সেখানে ছুটে যায়।"],
+["A little learning is a dangerous thing.","","অল্পবিদ্যা ভয়ংকরী।"],
+["To err is human, to forgive divine.","","ভুল করা মানবিক, ক্ষমা করা স্বর্গীয়।"]
+]);
+G("Alexander Pope","An Essay on Man",[
+["An honest man is the noblest work of God.","","সৎ মানুষ ঈশ্বরের শ্রেষ্ঠ সৃষ্টি।"],
+["Charms strike the sight, but merit strikes the soul.","","সৌন্দর্য চোখ ধাঁধায়, গুণ আত্মাকে স্পর্শ করে।"],
+["The proper study of mankind is man.","","মানবজাতির যথার্থ অধ্যয়ন হলো মানুষ।"],
+["Hope springs eternal in the human breast.","","মানুষের বুকে আশা চিরন্তন ঝরনার মতো উৎসারিত হয়।"],
+["Order is heaven's first law.","","শৃঙ্খলা স্বর্গের প্রথম আইন।"]
+]);
+
+G("John Milton","Paradise Lost",[
+["It is better to reign in hell than to serve in heaven.","","স্বর্গে দাসত্ব করার চেয়ে নরকে রাজত্ব করা শ্রেয়।"],
+["Death is the golden key that opens the palace of eternity.","","মৃত্যু সেই সোনালি চাবি যা অনন্তের প্রাসাদের দরজা খোলে।"]
+]);
+G("John Milton","Paradise Regained",[["Childhood shows the man, as morning shows the day.","","সকাল যেমন দিন দেখায়, শৈশব তেমন মানুষ দেখায়।"]]);
+G("John Milton","Areopagitica",[
+["Give me the liberty to know, to utter, and to argue freely according to conscience, above all liberties.","","সব স্বাধীনতার ওপরে আমাকে বিবেক অনুযায়ী জানার, বলার ও যুক্তি দেওয়ার স্বাধীনতা দাও।"],
+["Books are not absolutely dead things, but do contain a potency of life in them.","","বই সম্পূর্ণ মৃত বস্তু নয়, এর মধ্যে প্রাণশক্তি আছে।"],
+["Many a man lives a burden to the earth; but a good book is the precious life-blood of a master spirit.","","অনেকেই পৃথিবীর বোঝা হয়ে বাঁচে; কিন্তু ভালো বই মহৎ আত্মার মূল্যবান প্রাণরস।"]
+]);
+
+G("G. B. Shaw","Arms and the Man",[
+["Nine soldiers out of ten are born fools.","","দশজন সৈনিকের নয়জনই জন্মগত নির্বোধ।"],
+["It is our duty to live as long as we can.","","যতদিন পারা যায় বেঁচে থাকা আমাদের কর্তব্য।"]
+]);
+G("G. B. Shaw","Man and Superman",[["There are two tragedies in life: one is not to get your heart's desire, the other is to get it.","","জীবনে দুই ধরনের ট্র্যাজেডি আছে: একটি হৃদয়ের কাঙ্ক্ষিত বস্তু না পাওয়া, অন্যটি তা পাওয়া।"]]);
+G("G. B. Shaw","Saint Joan",[
+["God is on the side of the big battalions.","","ঈশ্বর বড় বাহিনীর পক্ষে থাকেন।"],
+["Beware of false knowledge; it is more dangerous than ignorance.","","ভুল জ্ঞান থেকে সাবধান; এটি অজ্ঞতার চেয়েও ভয়ংকর।"]
+]);
+
+G("Charles Dickens","Martin Chuzzlewit",[["Charity begins at home, and justice begins next door.","","দানের শুরু নিজ গৃহে, আর ন্যায়বিচারের শুরু প্রতিবেশীর দুয়ারে।"]]);
+G("Charles Dickens","Great Expectations",[
+["The success is not mine, the failure is not mine, but the two together make me.","","সাফল্য আমার নয়, ব্যর্থতাও আমার নয়, তবে দুইয়ে মিলেই আমি।"],
+["We need never be ashamed of our tears.","","আমাদের অশ্রুর জন্য কখনো লজ্জিত হওয়ার দরকার নেই।"]
+]);
+G("Charles Dickens","Hard Times",[
+["Depth answers only to depth.","","গভীরতার উত্তর কেবল গভীরতাই দেয়।"],
+["Thou art an angel. Bless thee, bless thee!","","তুমি এক দেবদূত। ঈশ্বর তোমার মঙ্গল করুন!"]
+]);
+G("Charles Dickens","A Tale of Two Cities",[
+["There is prodigious strength in sorrow and despair.","","দুঃখ ও হতাশার মধ্যে বিপুল শক্তি নিহিত।"],
+["I wish you to know that you have been the last dream of my soul.","","আমি চাই তুমি জানো, তুমিই আমার আত্মার শেষ স্বপ্ন।"]
+]);
+
+G("W. B. Yeats","The Second Coming",[["Things fall apart; the centre cannot hold; mere anarchy is loosed upon the world.","","সবকিছু ভেঙে পড়ছে; কেন্দ্র ধরে রাখতে পারছে না; পৃথিবীতে নিছক নৈরাজ্য ছেড়ে দেওয়া হয়েছে।"]]);
+G("W. B. Yeats","Easter 1916",[
+["All changed, changed utterly: a terrible beauty is born.","","সব বদলে গেছে, সম্পূর্ণ বদলে গেছে: এক ভয়ংকর সৌন্দর্যের জন্ম হয়েছে।"],
+["Too long a sacrifice can make a stone of the heart.","","দীর্ঘ আত্মত্যাগ হৃদয়কে পাথর করে দিতে পারে।"]
+]);
+
+G("Gladstone","Criminology / Legal Journals",[
+["Justice delayed is justice denied.","","বিলম্বিত বিচার মানে বিচার অস্বীকার।"],
+["Justice hurried is justice buried.","","তাড়াহুড়োর বিচার মানে ন্যায়বিচারকে কবর দেওয়া।"]
+]);
+
+G("Matthew Arnold","Sohrab and Rustum",[["Truth sits upon the lips of dying men.","","মৃত্যুপথযাত্রীর ঠোঁটে সত্য বসে থাকে।"]]);
+G("Matthew Arnold","The Study of Poetry",[["Even silence will appear incomplete without poetry.","","কবিতা ছাড়া নীরবতাও অসম্পূর্ণ মনে হবে।"]]);
+G("Matthew Arnold","Philomela",[["Eternal passion! Eternal pain!","","চিরন্তন আবেগ! চিরন্তন যন্ত্রণা!"]]);
+
+G("Lord Byron","Don Juan",[
+["Love is of man's life a thing apart; 'tis woman's whole existence.","","পুরুষের জীবনে প্রেম একটি আলাদা অংশ; নারীর জন্য তা সমগ্র অস্তিত্ব।"],
+["Sweet is revenge, especially to women.","","প্রতিশোধ মধুর—বিশেষ করে নারীদের কাছে।"],
+["Pleasure's a sin, and sometimes sin's a pleasure.","","আনন্দ মানেই পাপ, আবার কখনো পাপই আনন্দ।"]
+]);
+G("Lord Byron","Works of Lord Byron",[["Man's conscience is the oracle of God.","","মানুষের বিবেক ঈশ্বরের বাণীবাহক।"]]);
+
+G("Dr. Samuel Johnson","",[
+["Great works are performed not by strength but by perseverance.","","মহৎ কাজ শক্তি দিয়ে নয়, অধ্যবসায় দিয়ে সম্পন্ন হয়।"],
+["My dear friend, clear your mind of cant.","","প্রিয় বন্ধু, মনের কপটতা দূর করো।"],
+["Kindness is in our power, even when fondness is not.","","স্নেহ না থাকলেও দয়া দেখানো আমাদের ক্ষমতার মধ্যে।"]
+]);
+
+G("George Eliot","Silas Marner",[
+["Nobody can be happier than we are.","","আমাদের চেয়ে সুখী আর কেউ হতে পারে না।"],
+["Nobody could be happier than we are.","","আমাদের চেয়ে সুখী আর কেউ হতে পারত না।"]
+]);
+G("George Eliot","Wit and Wisdom of George Eliot",[["No man can be wise on an empty stomach.","","খালি পেটে কেউ জ্ঞানী হতে পারে না।"]]);
+G("George Eliot","The Mill on the Floss",[["Don't judge a book by its cover.","","বাহ্যিক সৌন্দর্য দেখে কিছুর মূল্য নির্ধারণ করা উচিত নয়।"]]);
+
+G("Robert Browning","The Inn Album",[
+["Ignorance is not innocence but sin.","","অজ্ঞতা নির্দোষিতা নয়, পাপ।"],
+["Oppression makes the wise man mad.","","নিপীড়ন জ্ঞানী মানুষকেও পাগল করে দেয়।"]
+]);
+G("Robert Browning","Fifine at the Fair",[["So absolutely good is truth, truth never hurts the teller.","","সত্য এতটাই ভালো যে সত্য কখনো সত্যবাদীকে ব্যথা দেয় না।"]]);
+G("Robert Browning","Apollo and the Fates",[["A minute's success pays the failure of years.","","এক মুহূর্তের সাফল্য বছরের ব্যর্থতাকে ঢেকে দেয়।"]]);
+
+G("Edmund Burke","Reflections on the Revolution in France",[
+["Superstition is the religion of feeble minds.","","কুসংস্কার দুর্বলচিত্ত মানুষের ধর্ম।"],
+["The greater the power, the more dangerous the abuse.","","ক্ষমতা যত বড়, অপব্যবহার তত বিপজ্জনক।"],
+["Power and authority are sometimes bought by kindness.","","ক্ষমতা ও কর্তৃত্ব কখনো কখনো দয়া দিয়ে কেনা যায়।"],
+["A perfect democracy is therefore the most shameless thing in the world.","","নিখুঁত গণতন্ত্র তাই পৃথিবীর সবচেয়ে নির্লজ্জ বিষয়।"]
+]);
+
+G("William Blake","",[
+["It is easier to forgive an enemy than to forgive a friend.","","বন্ধুকে ক্ষমা করার চেয়ে শত্রুকে ক্ষমা করা সহজ।"],
+["Great things are done when men and mountains meet.","","মানুষ ও পাহাড় মিললে মহৎ কাজ সাধিত হয়।"]
+]);
+G("William Blake","The Divine Image",[["All pray in their distress.","","দুর্দিনে সবাই প্রার্থনা করে।"]]);
+G("William Blake","The Proverbs of Hell",[["The road of excess leads to the palace of wisdom.","","অতিরিক্ততার পথ প্রজ্ঞার প্রাসাদে পৌঁছে দেয়।"]]);
+
+G("W. M. Thackeray","Vanity Fair",[["Life is a mirror: if you frown at it, it frowns back; if you smile, it returns the greeting.","","জীবন দর্পণের মতো: ভ্রূকুটি করলে ভ্রূকুটি ফেরত দেয়, হাসলে হাসি ফেরত দেয়।"]]);
+
+G("Aristotle","",[
+["Man is by nature a political animal.","","মানুষ জন্মগতভাবেই রাজনৈতিক জীব।"],
+["Poverty is the parent of revolution and crime.","","দারিদ্র্য বিপ্লব ও অপরাধের জনক।"],
+["A friend to all is a friend to none.","","যে সবার বন্ধু, সে কারো বন্ধু নয়।"],
+["A true friend is one soul in two bodies.","","প্রকৃত বন্ধু দুই দেহে এক প্রাণ।"],
+["Happiness depends upon ourselves.","","সুখ আমাদের নিজেদের ওপর নির্ভর করে।"],
+["We make war that we may live in peace.","","শান্তিতে বাঁচার জন্যই আমরা যুদ্ধ করি।"]
+]);
+G("Plato","",[
+["Necessity is the mother of invention.","","প্রয়োজনীয়তা উদ্ভাবনের জননী।"],
+["Love is a serious mental disease.","","ভালোবাসা এক গুরুতর মানসিক রোগ।"],
+["At the touch of love everyone becomes a poet.","","প্রেমের ছোঁয়ায় সবাই কবি হয়ে যায়।"],
+["Ignorance, the root and the stem of every evil.","","অজ্ঞতা সব মন্দের মূল ও কাণ্ড।"],
+["Knowledge becomes evil if the aim be not virtuous.","","লক্ষ্য সৎ না হলে জ্ঞান মন্দ হয়ে ওঠে।"],
+["Books give a soul to the universe, wings to the mind, flight to the imagination, and life to everything.","","বই বিশ্বকে আত্মা দেয়, মনকে ডানা দেয়, কল্পনাকে উড়াল দেয়, আর সবকিছুকে প্রাণ দেয়।"]
+]);
+G("Socrates","",[
+["Know thyself.","","নিজেকে জানো।"],
+["The unexamined life is not worth living.","","যে জীবন যাচাই করা হয়নি, তা বেঁচে থাকার যোগ্য নয়।"],
+["I know nothing except the fact of my ignorance.","","আমার অজ্ঞতার কথা ছাড়া আমি আর কিছুই জানি না।"],
+["To find yourself, think for yourself.","","নিজেকে খুঁজে পেতে হলে নিজে চিন্তা করো।"],
+["Envy is the ulcer of the soul.","","ঈর্ষা আত্মার ক্ষত।"]
+]);
+G("Benjamin Franklin","",[
+["Honesty is the best policy.","","সততাই সর্বোত্তম পন্থা।"],
+["Early to bed and early to rise makes a man healthy, wealthy and wise.","","তাড়াতাড়ি শোয়া ও তাড়াতাড়ি ওঠা মানুষকে সুস্থ, ধনী ও জ্ঞানী করে।"],
+["Admiration is the daughter of ignorance.","","ভক্তি অজ্ঞতার কন্যা।"],
+["Love your enemies, for they tell you your faults.","","শত্রুকে ভালোবাসো, কারণ তারা তোমার দোষ ধরিয়ে দেয়।"],
+["No gains without pains.","","কষ্ট ছাড়া কেষ্ট মেলে না।"],
+["Well done is better than well said.","","বলার চেয়ে করা শ্রেয়।"]
+]);
+G("Charles Robert Darwin","The Survival of the Fittest",[["Tomorrow as yesterday, only the fittest will survive in the struggle for existence.","","অতীতের মতো ভবিষ্যতেও অস্তিত্বের সংগ্রামে কেবল যোগ্যরাই টিকে থাকবে।"]]);
+G("O. Henry","Hearts and Hands",[
+["My butterfly days are over.","","আমার প্রজাপতির (উড়ন্ত) দিন শেষ।"],
+["Money is not everything.","","অর্থই সবকিছু নয়।"]
+]);
+G("Charlotte Bronte","Jane Eyre",[["I am no bird; and no net ensnares me: I am a free human being with an independent will.","","আমি কোনো পাখি নই, কোনো জাল আমাকে আটকাতে পারে না; আমি স্বাধীন ইচ্ছাসম্পন্ন মুক্ত মানুষ।"]]);
+G("Karl Marx","The Communist Manifesto",[["The history of all hitherto existing society is the history of class struggles.","","এ পর্যন্ত বিদ্যমান সব সমাজের ইতিহাস শ্রেণিসংগ্রামের ইতিহাস।"]]);
+G("Karl Marx","The Eighteenth Brumaire of Louis Bonaparte",[["Men make their own history.","","মানুষ নিজেই নিজের ইতিহাস গড়ে।"]]);
+G("Karl Marx","A Contribution to the Critique of Hegel's Philosophy of Right",[["Religion is the opium of the people.","","ধর্ম মানুষের জন্য আফিম (দুঃখ ভুলিয়ে রাখার নেশা)।"]]);
+
+/* Quotations from different disciplines */
+G("John Dryden","",[["They think too little who talk much.","","যারা বেশি কথা বলে, তারা কম ভাবে।"]]);
+G("John Bunyan","",[
+["In prayer it is better to have a heart without words than words without a heart.","","হৃদয়হীন শব্দের প্রার্থনার চেয়ে শব্দহীন হৃদয়ের প্রার্থনা শ্রেয়।"],
+["Where there is no law, there is no freedom.","","যেখানে আইন নেই, সেখানে স্বাধীনতা নেই।"],
+["All wealth is the product of labor.","","সমস্ত সম্পদ শ্রমের ফল।"],
+["No man's knowledge here can go beyond his experience.","","কারো জ্ঞান তার অভিজ্ঞতার বাইরে যেতে পারে না।"]
+]);
+G("George Herbert","",[
+["Help thyself and God will help thee.","","নিজেকে সাহায্য করো, ঈশ্বর তোমাকে সাহায্য করবেন।"],
+["Living well is the best revenge.","","ভালো থাকাই সর্বোত্তম প্রতিশোধ।"]
+]);
+G("Samuel Butler","",[["Self-preservation is the first law of nature.","","আত্মরক্ষা প্রকৃতির প্রথম আইন।"]]);
+G("Rousseau","",[
+["Man is born free and everywhere he is in chains.","","মানুষ স্বাধীন হয়ে জন্মায়, কিন্তু সর্বত্র সে শৃঙ্খলিত।"],
+["Patience is bitter, but its fruit is sweet.","","ধৈর্য তিক্ত, কিন্তু তার ফল মিষ্টি।"],
+["People are entitled to sovereign power.","","জনগণই সার্বভৌম ক্ষমতার অধিকারী।"]
+]);
+G("Gautama Buddha","",[["Pain is the outcome of sin.","","যন্ত্রণা পাপের ফল।"]]);
+G("Martin Luther King Jr.","",[["Injustice anywhere is a threat to justice everywhere.","","যেকোনো স্থানের অন্যায় সর্বত্র ন্যায়বিচারের জন্য হুমকি।"]]);
+G("Voltaire","",[
+["I disapprove of what you say, but I will defend to the death your right to say it.","","আমি তোমার কথার সঙ্গে একমত নই, কিন্তু তা বলার অধিকার রক্ষায় জীবন দেব।"],
+["Common sense is not so common.","","সাধারণ জ্ঞান ততটা সাধারণ নয়।"],
+["Prejudice is the reason of fools.","","কুসংস্কার মূর্খদের যুক্তি।"]
+]);
+G("Thomas Jefferson","",[["Eternal vigilance is the price of liberty.","","চিরন্তন সতর্কতাই স্বাধীনতার মূল্য।"]]);
+G("Henry Ward Beecher","",[["Riches are not the end of life, but an instrument of life.","","সম্পদ জীবনের লক্ষ্য নয়, জীবনযাপনের উপকরণ মাত্র।"]]);
+G("Abraham Lincoln","",[
+["Democracy is a government of the people, by the people, for the people.","","গণতন্ত্র জনগণের, জনগণের দ্বারা, জনগণের জন্য শাসনব্যবস্থা।"],
+["If you want to test a man's character, give him power.","","কারো চরিত্র পরীক্ষা করতে চাইলে তাকে ক্ষমতা দাও।"]
+]);
+G("Henrik Ibsen","",[
+["The strongest man in the world is he who stands most alone.","","পৃথিবীর সবচেয়ে শক্তিশালী মানুষ সে, যে সবচেয়ে একা দাঁড়াতে পারে।"],
+["A thousand words leave not the same deep impression as does a single deed.","","হাজার কথা একটি কাজের মতো গভীর ছাপ ফেলে না।"],
+["You have never loved me. You have only thought it pleasant to be in love with me.","","তুমি আমাকে কখনো ভালোবাসোনি; কেবল আমার প্রেমে পড়াকে আনন্দদায়ক মনে করেছ। (A Doll's House)"]
+]);
+G("Samuel Johnson","",[["Great works are performed not by strength but by perseverance.","","মহৎ কাজ শক্তি দিয়ে নয়, অধ্যবসায় দিয়ে হয়।"]]);
+G("Thomas à Kempis","",[["Man proposes but God disposes.","","মানুষ চায় এক, ঈশ্বর করেন আরেক।"]]);
+G("Thomas Carlyle","",[
+["Speech is great, but silence is greater.","","কথা বলা ভালো, কিন্তু চুপ থাকা আরও ভালো।"],
+["A loving heart is the beginning of all knowledge.","","অনুরাগী হৃদয় থেকেই সব জ্ঞানের শুরু।"]
+]);
+G("A. P. J. Abdul Kalam","",[
+["Dream is not that which you see while sleeping; it is something that does not let you sleep.","","স্বপ্ন তা নয় যা ঘুমিয়ে দেখো; স্বপ্ন তা যা তোমাকে ঘুমাতে দেয় না।"],
+["If you want to shine like a sun, first burn like a sun.","","সূর্যের মতো জ্বলতে চাইলে আগে সূর্যের মতো পুড়তে হবে।"]
+]);
+G("Nelson Mandela","",[
+["Education is the most powerful weapon which you can use to change the world.","","শিক্ষা সবচেয়ে শক্তিশালী অস্ত্র যা দিয়ে বিশ্ব বদলানো যায়।"],
+["Life is a course with endless obstacles to hurdle.","","জীবন অন্তহীন বাধা অতিক্রমের পথ।"]
+]);
+G("Albert Einstein","",[
+["Imagination is more important than knowledge.","","জ্ঞানের চেয়ে কল্পনাশক্তি বেশি গুরুত্বপূর্ণ।"],
+["Science without religion is lame, religion without science is blind.","","ধর্ম ছাড়া বিজ্ঞান পঙ্গু; বিজ্ঞান ছাড়া ধর্ম অন্ধ।"],
+["Life is like riding a bicycle. To keep your balance you must keep moving.","","জীবন সাইকেল চালানোর মতো; ভারসাম্য রাখতে চললেই হবে।"]
+]);
+G("Faequser","",[["Necessity is the mother of invention.","","প্রয়োজনীয়তাই উদ্ভাবনের জনক।"]]);
+G("Virginia Woolf","",[["You cannot find peace by avoiding life.","","জীবনকে এড়িয়ে শান্তি খোঁজা যায় না।"]]);
+G("Napoleon Bonaparte","",[
+["Give me a good mother; I will give you a good nation.","","আমাকে একজন শিক্ষিত মা দাও, আমি তোমাকে একটি শিক্ষিত জাতি দেব।"],
+["Impossible is a word to be found in the dictionary of fools.","","'অসম্ভব' শব্দটি কেবল মূর্খদের অভিধানে পাওয়া যায়।"],
+["Glory is fleeting, but obscurity is forever.","","খ্যাতি ক্ষণস্থায়ী, কিন্তু অখ্যাতি চিরস্থায়ী।"]
+]);
+G("Thomas Hardy","",[["The greater the sinner, the greater the saint.","","যত বড় পাপী, তত বড় সাধু।"]]);
+G("Nicolas Chamfort","",[["Success makes success, like money makes money.","","টাকায় যেমন টাকা আসে, সাফল্যে তেমন সাফল্য আসে।"]]);
+G("Oliver Goldsmith","",[["Handsome is that handsome does.","","রূপে কালো, গুণে ভালো।"]]);
+G("Francis Bacon","Quotations from Different Discipline",[["Knowledge is power.","","জ্ঞানই শক্তি।"]]);
+G("Ben Jonson","",[["Riches are in fortune a greater good than wisdom is in nature.","","ভাগ্যে পাওয়া সম্পদ প্রকৃতিদত্ত জ্ঞানের চেয়ে বড় কল্যাণ।"]]);
+G("Abraham Cowley","",[["Life is an incurable disease.","","জীবন এক দুরারোগ্য ব্যাধি।"]]);
+G("Dylan Thomas","",[["Time let me hail and climb golden in the heydays of his eyes.","","সময় আমাকে সোনালি যৌবনের দিনগুলোতে অভিবাদন জানাতে ও আরোহণ করতে দিক।"]]);
+G("Nathaniel Hawthorne","",[["There is no good on earth, and sin is but a name.","","পৃথিবীতে ভালো বলে কিছু নেই, আর পাপ কেবল একটি নাম।"]]);
+G("Saul Bellow","",[["The past is no good to us. The future is full of anxiety. Only the present is real—the here and now.","","অতীত আমাদের কোনো কাজে লাগে না, ভবিষ্যৎ উদ্বেগে ভরা; কেবল বর্তমানই বাস্তব।"]]);
+G("Stephen Hawking","",[["Intelligence is the ability to adapt to change.","","বুদ্ধিমত্তা হলো পরিবর্তনের সঙ্গে খাপ খাওয়ানোর ক্ষমতা।"]]);
+G("Roosevelt","",[["No man is above the law and no man is below it.","","কেউ আইনের ঊর্ধ্বে নয়, আবার কেউ আইনের নিচেও নয়।"]]);
+G("William Congreve","",[["Music has charms to soothe a savage breast, to soften rocks, or bend a knotted oak.","","বন্য হৃদয়কে শান্ত করতে, পাথরকে নরম করতে বা গিঁটওয়ালা ওক গাছকে নত করতে সংগীতের মোহিনী শক্তি আছে।"]]);
+G("Winston Churchill","",[["When there is no enemy within, the enemy outside cannot hurt you.","","ভেতরে শত্রু (দুর্বলতা) না থাকলে বাইরের শত্রু ক্ষতি করতে পারে না।"]]);
+G("Oscar Wilde","",[
+["Experience is simply the name we give our mistakes.","","ভুলের অন্য নামই অভিজ্ঞতা।"],
+["Art is the most intense mode of individualism that the world has known.","","শিল্প হলো বিশ্বের জানা ব্যক্তিস্বাতন্ত্র্যের সবচেয়ে তীব্র রূপ।"]
+]);
+
+/* Summaries (Bangla) */
+const STORIES=[
+{t:"King Lear",w:"William Shakespeare (ট্র্যাজেডি)",ch:"King Lear, Cordelia, Goneril, Regan, Gloucester, Edgar, Edmund, Fool, Kent",
+s:"বৃদ্ধ রাজা লিয়ার তাঁর রাজ্য তিন কন্যার মধ্যে ভাগ করে দিতে চান। তিনি জানতে চান কে তাঁকে কতটা ভালোবাসে। গোনেরিল ও রিগান মিষ্টি কথায় বাবাকে তুষ্ট করে, কিন্তু কনিষ্ঠা কর্ডেলিয়া সরল সত্য বলে—'কর্তব্য অনুযায়ী ভালোবাসি, কমও নয়, বেশিও নয়'। ক্রুদ্ধ লিয়ার তাকে ত্যাজ্য করেন; ফ্রান্সের রাজা তাকে বিয়ে করেন। ক্ষমতা পেয়ে গোনেরিল ও রিগান বাবাকে অপমান ও অবহেলা করে। পাগলপ্রায় লিয়ার ঝড়ের রাতে প্রান্তরে ঘুরে বেড়ান। এদিকে গ্লুসেস্টারের জারজ পুত্র এডমন্ড ষড়যন্ত্র করে বৈধ পুত্র এডগারকে তাড়ায় এবং পিতাকে অন্ধ করায়। কর্ডেলিয়া সৈন্য নিয়ে ফিরে এলেও পরাজিত ও বন্দি হয় এবং তাকে ফাঁসি দেওয়া হয়। কর্ডেলিয়ার মৃতদেহ কোলে নিয়ে শোকে লিয়ারও মৃত্যু হয়।",
+th:"অকৃতজ্ঞতা, তোষামোদ বনাম সত্য, অন্ধত্ব (শারীরিক ও মানসিক), পারিবারিক বিশ্বাসঘাতকতা, ক্ষমতা ও ভাগ্য।"},
+{t:"Hamlet",w:"William Shakespeare (ট্র্যাজেডি)",ch:"Hamlet, Claudius, Gertrude, Ophelia, Polonius, Laertes, Horatio, Ghost",
+s:"ডেনমার্কের রাজকুমার হ্যামলেটের পিতা রাজাকে তাঁর ভাই ক্লদিয়াস বিষ খাইয়ে হত্যা করে সিংহাসন ও রানি গারট্রুডকে দখল করে। পিতার প্রেতাত্মা হ্যামলেটকে প্রতিশোধ নিতে বলে। হ্যামলেট পাগলামির ভান করে সত্য যাচাইয়ে নাটকের মঞ্চায়ন করান, যাতে ক্লদিয়াসের অপরাধ ধরা পড়ে। ভুলবশত সে পোলোনিয়াসকে হত্যা করে; ফলে ওফেলিয়া উন্মাদ হয়ে নদীতে ডুবে মরে। ওফেলিয়ার ভাই লায়ার্টিস প্রতিশোধের জন্য ক্লদিয়াসের সঙ্গে চক্রান্ত করে তলোয়ার-যুদ্ধের আয়োজন করে—তলোয়ারে বিষ, পানীয়তেও বিষ। যুদ্ধে হ্যামলেট, লায়ার্টিস, গারট্রুড ও ক্লদিয়াস সবাই মারা যায়; হ্যামলেট মৃত্যুর আগে ক্লদিয়াসকে হত্যা করে।",
+th:"প্রতিশোধ, সিদ্ধান্তহীনতা, মৃত্যু ও জীবনের অর্থ, কপটতা, উন্মাদনা।"},
+{t:"Macbeth",w:"William Shakespeare (ট্র্যাজেডি)",ch:"Macbeth, Lady Macbeth, Duncan, Banquo, Macduff, Malcolm, Three Witches",
+s:"স্কটল্যান্ডের সেনাপতি ম্যাকবেথ যুদ্ধজয় শেষে তিন ডাইনির ভবিষ্যদ্বাণী শোনে—সে রাজা হবে। স্ত্রী লেডি ম্যাকবেথের প্ররোচনায় সে অতিথি রাজা ডানকানকে হত্যা করে সিংহাসন দখল করে। ক্ষমতা ধরে রাখতে সে বাংকোকে হত্যা করায় এবং ম্যাকডাফের পরিবারকে নিশ্চিহ্ন করে। অপরাধবোধে লেডি ম্যাকবেথ ঘুমের মধ্যে হাঁটে ও হাত ধুতে চায়, শেষে আত্মহত্যা করে। ইংল্যান্ডের সাহায্যে ম্যালকম ও ম্যাকডাফ আক্রমণ করে; ডাইনির ভবিষ্যদ্বাণীর ফাঁক ('নারীজাত কেউ তোমাকে মারতে পারবে না') ধরে সিজারিয়ান-জাত ম্যাকডাফ ম্যাকবেথকে হত্যা করে।",
+th:"উচ্চাকাঙ্ক্ষা, অপরাধবোধ, নিয়তি বনাম স্বাধীন ইচ্ছা, প্রকৃতিবিরুদ্ধ কাজের পরিণতি।"},
+{t:"Romeo and Juliet",w:"William Shakespeare (ট্র্যাজেডি)",ch:"Romeo, Juliet, Friar Lawrence, Tybalt, Mercutio, Capulet, Montague, Nurse",
+s:"ভেরোনার দুই শত্রু পরিবার—মন্টেগু ও ক্যাপুলেট। এক নাচের আসরে মন্টেগু-পুত্র রোমিও ও ক্যাপুলেট-কন্যা জুলিয়েট প্রেমে পড়ে এবং ফ্রায়ার লরেন্সের সাহায্যে গোপনে বিয়ে করে। টাইবল্টের হাতে মার্কুশিও নিহত হলে রোমিও টাইবল্টকে মেরে ফেলে ও নির্বাসিত হয়। জুলিয়েটের জোর করে বিয়ের ব্যবস্থা হলে ফ্রায়ার তাকে ঘুমের ওষুধ দেন যাতে সে মৃত মনে হয়। কিন্তু রোমিও সংবাদ পায়নি; জুলিয়েটকে মৃত ভেবে সে বিষ পান করে মরে। জেগে উঠে জুলিয়েট রোমিওকে মৃত দেখে ছুরিকাঘাতে আত্মহত্যা করে। দুই পরিবার সন্তানদের মৃত্যুতে শত্রুতা ভুলে মিলিত হয়।",
+th:"প্রেম বনাম ঘৃণা, ভাগ্য, তরুণ বনাম প্রবীণ, আবেগের ধ্বংসাত্মক পরিণতি।"},
+{t:"A Midsummer Night's Dream",w:"William Shakespeare (কমেডি)",ch:"Theseus, Hippolyta, Hermia, Helena, Lysander, Demetrius, Oberon, Titania, Puck, Bottom",
+s:"এথেন্সে হার্মিয়া লিসান্ডারকে ভালোবাসে, কিন্তু তার পিতা তাকে ডেমেট্রিয়াসের সঙ্গে বিয়ে দিতে চান। প্রেমিক-প্রেমিকা বনে পালিয়ে যায়, তাদের পিছু নেয় ডেমেট্রিয়াস ও তাকে ভালোবাসা হেলেনা। বনে পরীরাজ ওবেরন ও রানি টিটানিয়ার ঝগড়া চলছে। ওবেরনের নির্দেশে পাক জাদুর ফুলের রস ভুল লোকের চোখে ঢেলে দেয়, ফলে প্রেমের জট পাকায়; টিটানিয়া গাধার মাথাওয়ালা কারিগর বটমের প্রেমে পড়ে। শেষে সব ঠিক হয়ে যায়, জুটিগুলো সঠিকভাবে মিলিত হয় এবং তিনটি বিয়ে একসঙ্গে অনুষ্ঠিত হয়।",
+th:"প্রেমের অযৌক্তিকতা, স্বপ্ন ও বাস্তবতা, জাদু ও রূপান্তর।"},
+{t:"Julius Caesar",w:"William Shakespeare (ট্র্যাজেডি)",ch:"Julius Caesar, Brutus, Cassius, Mark Antony, Calpurnia, Octavius",
+s:"রোমে জুলিয়াস সিজারের ক্ষমতা বাড়ায় ক্যাসিয়াস ও অন্যান্যরা শঙ্কিত হয়। তারা সম্মানিত ব্রুটাসকে বোঝায় যে সিজার স্বৈরাচারী হবে; ব্রুটাস প্রজাতন্ত্র রক্ষার জন্য ষড়যন্ত্রে যোগ দেয়। 'আইডস অব মার্চ'-এ সিজারকে সিনেটে ছুরিকাঘাতে হত্যা করা হয়। মার্ক অ্যান্টনি অন্ত্যেষ্টিক্রিয়ার ভাষণে জনতাকে ক্ষেপিয়ে তোলে। গৃহযুদ্ধে ফিলিপ্পির যুদ্ধে ব্রুটাস ও ক্যাসিয়াস পরাজিত হয়ে আত্মহত্যা করে; অ্যান্টনি ও অক্টেভিয়াস জয়ী হয়।",
+th:"ক্ষমতা ও উচ্চাকাঙ্ক্ষা, নিয়তি, বন্ধুত্ব বনাম দেশপ্রেম, জনমত।"},
+{t:"Twelfth Night",w:"William Shakespeare (কমেডি)",ch:"Viola (Cesario), Sebastian, Orsino, Olivia, Malvolio, Feste, Sir Toby, Maria",
+s:"জাহাজডুবির পর ভায়োলা ইলিরিয়ায় পৌঁছে পুরুষবেশে 'সিজারিও' নাম নিয়ে ডিউক অর্সিনোর অনুচর হয়। অর্সিনো কাউন্টেস অলিভিয়াকে ভালোবাসে এবং সিজারিওকে প্রেমদূত পাঠায়; অলিভিয়া সিজারিওর প্রেমে পড়ে, আর ভায়োলা গোপনে অর্সিনোকে ভালোবাসে। ম্যালভোলিওকে বোকা বানাতে ভুয়া চিঠি লেখা হয়, সে উদ্ভট আচরণ করে বন্দি হয়। ভায়োলার যমজ ভাই সেবাস্টিয়ানের আগমনে ভুল-বোঝাবুঝি ঘোচে—অলিভিয়া সেবাস্টিয়ানকে ও অর্সিনো ভায়োলাকে বিয়ে করে।",
+th:"ছদ্মবেশ ও পরিচয়, প্রেমের বিভ্রান্তি, আত্মপ্রবঞ্চনা।"},
+{t:"As You Like It",w:"William Shakespeare (কমেডি)",ch:"Rosalind, Orlando, Celia, Duke Senior, Duke Frederick, Jaques, Touchstone",
+s:"দুষ্ট ডিউক ফ্রেডেরিক বড় ভাই ডিউক সিনিয়রকে নির্বাসনে পাঠিয়েছে। কুস্তিতে জয়ী অর্ল্যান্ডো ও রোজালিন্ড প্রেমে পড়ে। রোজালিন্ডকেও নির্বাসিত করা হলে সে ছেলে 'গ্যানিমিড' সেজে বোন সিলিয়াকে নিয়ে আর্ডেনের বনে যায়। অর্ল্যান্ডোও ভাইয়ের অত্যাচারে সেখানে আশ্রয় নেয়। ছদ্মবেশী রোজালিন্ড অর্ল্যান্ডোকে প্রেমের শিক্ষা দেয়। শেষে পরিচয় প্রকাশ পায়, একসঙ্গে একাধিক বিয়ে হয় এবং ফ্রেডেরিক মন বদলে রাজ্য ফিরিয়ে দেয়।",
+th:"নগর বনাম বন (প্রকৃতি), ছদ্মবেশ, প্রেম ও পরিবার। 'All the world's a stage' (Jaques) এখানকার বিখ্যাত উক্তি।"},
+{t:"Othello",w:"William Shakespeare (ট্র্যাজেডি)",ch:"Othello, Desdemona, Iago, Cassio, Emilia, Brabantio, Roderigo",
+s:"ভেনিসের মুর সেনাপতি ওথেলো গোপনে সেনেটর ব্রাবান্টিওর কন্যা ডেসডিমোনাকে বিয়ে করে। ওথেলো কাসিওকে পদোন্নতি দিলে ঈর্ষান্বিত ইয়াগো প্রতিশোধের ছক কষে। সে ডেসডিমোনার রুমাল ব্যবহার করে ওথেলোর মনে সন্দেহ ঢোকায় যে ডেসডিমোনা কাসিওর সঙ্গে অসতী। ঈর্ষায় অন্ধ ওথেলো ডেসডিমোনাকে শ্বাসরোধে হত্যা করে। পরে ইয়াগোর স্ত্রী এমিলিয়া সত্য ফাঁস করে; ওথেলো আত্মহত্যা করে এবং ইয়াগো ধরা পড়ে।",
+th:"ঈর্ষা, বর্ণবাদ, প্রতারণা, বিশ্বাস ও সন্দেহ।"},
+{t:"The Tempest",w:"William Shakespeare (রোমান্স/কমেডি)",ch:"Prospero, Miranda, Ferdinand, Ariel, Caliban, Antonio, Alonso, Trinculo",
+s:"মিলানের বৈধ ডিউক প্রস্পেরোকে ভাই অ্যান্তোনিও ক্ষমতাচ্যুত করে কন্যা মিরান্ডাসহ নৌকায় ভাসিয়ে দেয়। তাঁরা এক দ্বীপে পৌঁছান, যেখানে প্রস্পেরো জাদুবিদ্যা আয়ত্ত করে বায়বীয় আত্মা এরিয়েল ও কদাকার ক্যালিবানকে বশ করেন। বহু বছর পর শত্রুদের জাহাজ দ্বীপের কাছে এলে তিনি ঝড় তুলে জাহাজ ডোবান। রাজপুত্র ফার্দিনান্দ ও মিরান্ডা প্রেমে পড়ে। ক্যালিবান ও মাতালদের চক্রান্ত ব্যর্থ হয়। শেষে প্রস্পেরো শত্রুদের ক্ষমা করেন, জাদুর দণ্ড ভেঙে ফেলেন এবং মিলানে ফিরে যান।",
+th:"ক্ষমা বনাম প্রতিশোধ, ক্ষমতা ও উপনিবেশ, স্বাধীনতা, জাদু ও শিল্প।"},
+{t:"The Merchant of Venice",w:"William Shakespeare (কমেডি)",ch:"Antonio, Bassanio, Portia, Shylock, Jessica, Lorenzo, Launcelot",
+s:"বাসানিও ধনী পোর্শিয়াকে বিয়ে করতে বন্ধু বণিক অ্যান্তোনিওর কাছে টাকা চায়। অ্যান্তোনিও ইহুদি সুদখোর শাইলকের কাছ থেকে তিন হাজার ডুকাট ধার নেয়, শর্ত—শোধ না করলে তার দেহ থেকে এক পাউন্ড মাংস কাটা হবে। জাহাজ ডুবে গেলে অ্যান্তোনিও ঋণ শোধ করতে পারে না। পোর্শিয়া উকিল সেজে আদালতে বলে—মাংস কাটা যাবে, কিন্তু এক ফোঁটা রক্তও ঝরানো যাবে না। শাইলক পরাজিত হয়, সম্পদ হারায় ও ধর্মান্তরিত হতে বাধ্য হয়। প্রেমিকদের আংটির কৌতুকের পর সবাই সুখে মিলিত হয়।",
+th:"দয়া বনাম ন্যায়বিচার, বন্ধুত্ব, প্রেম ও অর্থ, ধর্মীয় বিদ্বেষ। ('All that glitters is not gold')"},
+{t:"Measure for Measure",w:"William Shakespeare (সমস্যা-নাটক)",ch:"Duke Vincentio, Angelo, Isabella, Claudio, Lucio, Escalus, Mariana",
+s:"ভিয়েনার ডিউক ছদ্মবেশে সন্ন্যাসী সেজে শহর দেখার জন্য ক্ষমতা কঠোর অ্যাঞ্জেলোর হাতে দেন। অ্যাঞ্জেলো বিবাহ-পূর্ব সম্পর্কের অপরাধে ক্লদিওর মৃত্যুদণ্ড দেয়। ক্লদিওর বোন ইসাবেলা ক্ষমা চাইতে এলে অ্যাঞ্জেলো প্রস্তাব দেয়—ইসাবেলা তার সঙ্গে রাত কাটালে ক্লদিও বাঁচবে। ইসাবেলা রাজি হয় না। ডিউক ছদ্মবেশে কৌশল করে অ্যাঞ্জেলোর পূর্ব বাগদত্তা মারিয়ানাকে ইসাবেলার জায়গায় পাঠায়। শেষে ডিউক নিজ পরিচয়ে ফিরে অ্যাঞ্জেলোর অপরাধ ফাঁস করেন, তাকে মারিয়ানার সঙ্গে বিয়ে দেন এবং ক্লদিও মুক্তি পায়।",
+th:"ন্যায়বিচার ও দয়া, ক্ষমতার অপব্যবহার, নৈতিকতা ও কপটতা।"},
+{t:"Dr. Faustus",w:"Christopher Marlowe (ট্র্যাজেডি)",ch:"Faustus, Mephistophilis, Good Angel, Bad Angel, Wagner, Lucifer",
+s:"জার্মানির পণ্ডিত ডক্টর ফাউস্টাস সব বিদ্যায় তৃপ্ত না হয়ে জাদুবিদ্যার প্রতি আকৃষ্ট হয়। সে শয়তানের দূত মেফিস্টোফিলিসের সঙ্গে চুক্তি করে—চব্বিশ বছর অসীম ক্ষমতা ও ভোগ পাবে, বিনিময়ে তার আত্মা শয়তানের হবে। সে অলৌকিক ক্ষমতায় নানা ভেলকি দেখায়, হেলেনের সঙ্গে মিলিত হয়। ভালো ও মন্দ দেবদূত তাকে বারবার পরামর্শ দেয়, কিন্তু সে অনুতাপ করতে পারে না। চুক্তির শেষ রাতে ভয়ংকর আতঙ্কে সে প্রার্থনা করে, কিন্তু দেরি হয়ে যায়; শয়তানরা তাকে নরকে টেনে নিয়ে যায়।",
+th:"জ্ঞানতৃষ্ণা ও অহংকার, পাপ ও অনুতাপ, ভালো বনাম মন্দ।"},
+{t:"Antony and Cleopatra",w:"William Shakespeare (ট্র্যাজেডি)",ch:"Antony, Cleopatra, Octavius Caesar, Enobarbus, Octavia",
+s:"রোমান ত্রিস্তম্ভের একজন মার্ক অ্যান্টনি মিশরের রানি ক্লিওপেট্রার প্রেমে মগ্ন থাকে। রাজনৈতিক প্রয়োজনে সে অক্টেভিয়াস সিজারের বোন অক্টেভিয়াকে বিয়ে করে, কিন্তু পরে ক্লিওপেট্রার কাছে ফিরে যায়। অ্যাকটিয়ামের নৌযুদ্ধে ক্লিওপেট্রা পালালে অ্যান্টনিও তার পিছু নেয় এবং পরাজিত হয়। ক্লিওপেট্রার মৃত্যুর ভুল সংবাদে অ্যান্টনি নিজেকে ছুরিকাঘাত করে ও তার কোলে মারা যায়। অক্টেভিয়াসের হাতে বন্দি হওয়ার অপমান এড়াতে ক্লিওপেট্রা বিষধর সাপের কামড়ে আত্মহত্যা করে।",
+th:"প্রেম বনাম কর্তব্য, রোম বনাম মিশর, ক্ষমতা ও আত্মমর্যাদা।"}
+];
+
+/* ---------------- STATE & HELPERS ---------------- */
+const Q=RAW.map((r,i)=>Object.assign({id:i},r));
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function load(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+let BM=new Set(load("bcsq_bm",[]));
+function saveBM(){save("bcsq_bm",[...BM]);$("#bmcnt").textContent=BM.size}
+function toggleBM(id){BM.has(id)?BM.delete(id):BM.add(id);saveBM()}
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const sp=q=>q.c?q.c.replace(/ to .*$/,""):q.a;
+const AUTHORS=[...new Set(Q.map(q=>q.a))];
+const SOURCES=[...new Set(Q.filter(q=>q.s).map(q=>q.s))];
+
+function quoteCard(q,opts){
+  opts=opts||{};
+  const on=BM.has(q.id);
+  return `<div class="card" data-id="${q.id}">
+  <p class="q-text">&ldquo;${esc(q.q)}&rdquo;</p>
+  ${q.b?`<p class="q-bn bn">${esc(q.b)}</p>`:""}
+  <div class="meta">
+    <span class="who">${esc(q.c||q.a)}</span>
+    ${q.c&&q.a?`<span class="small">— ${esc(q.a)}</span>`:""}
+    ${q.s?`<span class="src">${esc(q.s)}</span>`:""}
+    ${q.n?`<span class="note">${esc(q.n)}</span>`:""}
+    <button class="bm ${on?"on":""}" data-bm="${q.id}">${on?"★ Bookmarked":"☆ Bookmark"}</button>
+  </div></div>`;
+}
+
+/* ---------------- NAV ---------------- */
+let view="browse";
+function go(v){
+  view=v;
+  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  stopTimer();
+  ({browse:viewBrowse,practice:viewPractice,exam:viewExam,bookmarks:viewBookmarks,stories:viewStories})[v]();
+  window.scrollTo(0,0);
+}
+$("#nav").addEventListener("click",e=>{const b=e.target.closest("button");if(b)go(b.dataset.v)});
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-bm]");
+  if(b){const id=+b.dataset.bm;toggleBM(id);
+    const on=BM.has(id);
+    document.querySelectorAll(`[data-bm="${id}"]`).forEach(x=>{x.classList.toggle("on",on);x.textContent=on?"★ Bookmarked":"☆ Bookmark"});
+    if(view==="bookmarks"&&!on&&!b.closest(".practice-card")){viewBookmarks()}
+  }
+});
+
+/* ---------------- BROWSE ---------------- */
+function viewBrowse(){
+  const authorOpts=AUTHORS.map(a=>`<option>${esc(a)}</option>`).join("");
+  $("#app").innerHTML=`
+  <div class="tools">
+    <input type="text" id="srch" placeholder="Search quote, character, writer, work or Bangla…">
+    <select id="fa"><option value="">All writers</option>${authorOpts}</select>
+    <select id="fs"><option value="">All works</option></select>
+  </div>
+  <p class="small" id="cnt"></p><div id="list"></div>`;
+  const fa=$("#fa"),fs=$("#fs"),sr=$("#srch");
+  function fillSources(){
+    const a=fa.value;
+    const srcs=[...new Set(Q.filter(q=>q.s&&(!a||q.a===a)).map(q=>q.s))];
+    fs.innerHTML=`<option value="">All works</option>`+srcs.map(s=>`<option>${esc(s)}</option>`).join("");
+  }
+  function draw(){
+    const t=sr.value.trim().toLowerCase();
+    const res=Q.filter(q=>(!fa.value||q.a===fa.value)&&(!fs.value||q.s===fs.value)&&
+      (!t||(q.q+" "+q.b+" "+q.c+" "+q.a+" "+q.s).toLowerCase().includes(t)));
+    $("#cnt").textContent=`${res.length} of ${Q.length} quotations`;
+    $("#list").innerHTML=res.length?res.map(q=>quoteCard(q)).join(""):`<div class="empty">No quotation found.</div>`;
+  }
+  fa.onchange=()=>{fillSources();draw()};fs.onchange=draw;sr.oninput=draw;
+  fillSources();draw();
+}
+
+/* ---------------- QUESTION GENERATION ---------------- */
+const TYPE_LABEL={w:"Who is the writer of this quotation?",s:"From which work is this quotation taken?",c:"Who speaks this line (character)?"};
+function validTypes(q){
+  const t=[];
+  if(q.a!==SH)t.push("w");
+  if(q.s)t.push("s");
+  if(q.c&&q.a===SH)t.push("c");
+  return t;
+}
+function pickDistractors(q,type,correct){
+  let pool=[];
+  if(type==="w")pool=AUTHORS.filter(a=>a!==SH||false);
+  if(type==="s"){
+    const same=[...new Set(Q.filter(x=>x.a===q.a&&x.s).map(x=>x.s))];
+    pool=shuffle(same).concat(shuffle(SOURCES));
+  }
+  if(type==="c"){
+    const same=[...new Set(Q.filter(x=>x.s===q.s&&x.c).map(sp))];
+    const all=[...new Set(Q.filter(x=>x.c&&x.a===SH).map(sp))];
+    pool=shuffle(same).concat(shuffle(all));
+  }
+  if(type==="w")pool=shuffle(pool);
+  const out=[];
+  for(const p of pool){if(p!==correct&&!out.includes(p))out.push(p);if(out.length===3)break}
+  return out;
+}
+function makeQuestion(q,forceType){
+  const types=validTypes(q);
+  const type=forceType&&types.includes(forceType)?forceType:types[Math.floor(Math.random()*types.length)];
+  const correct=type==="w"?q.a:type==="s"?q.s:sp(q);
+  const opts=shuffle([correct,...pickDistractors(q,type,correct)]);
+  return {id:q.id,type,correct,opts,sel:null};
+}
+
+/* ---------------- PRACTICE ---------------- */
+let P=null;
+function scopeSelect(id){
+  return `<select id="${id}"><option value="all">All quotations</option><option value="bm">Bookmarked only</option>`+
+   `<option value="SH">Shakespeare (all plays)</option>`+
+   AUTHORS.filter(a=>a!==SH).map(a=>`<option value="a:${esc(a)}">${esc(a)}</option>`).join("")+`</select>`;
+}
+function scopePool(v){
+  if(v==="all")return Q;
+  if(v==="bm")return Q.filter(q=>BM.has(q.id));
+  if(v==="SH")return Q.filter(q=>q.a===SH);
+  return Q.filter(q=>q.a===v.slice(2));
+}
+function viewPractice(){
+  P=null;
+  $("#app").innerHTML=`<div class="card"><h2 style="margin-top:0">Practice</h2>
+  <p class="small">Instant feedback after every answer. Meaning in Bangla is shown after you answer.</p>
+  <div class="row"><label>Mode</label><select id="pm">
+    <option value="mix">Mixed questions</option>
+    <option value="c">Guess the character (Shakespeare)</option>
+    <option value="w">Guess the writer</option>
+    <option value="s">Guess the work / source</option>
+    <option value="flash">Flashcards</option></select></div>
+  <div class="row"><label>Quotes from</label>${scopeSelect("ps")}</div>
+  <div class="row"><label>Questions</label><select id="pn"><option>10</option><option>20</option><option>30</option><option value="0">All</option></select></div>
+  <button class="btn" id="pgo">Start practice</button></div>`;
+  $("#pgo").onclick=()=>{
+    const mode=$("#pm").value;let pool=scopePool($("#ps").value);
+    if(mode!=="mix"&&mode!=="flash")pool=pool.filter(q=>validTypes(q).includes(mode));
+    if(!pool.length){alert("No quotations available for this selection.");return}
+    pool=shuffle(pool);const n=+$("#pn").value;if(n)pool=pool.slice(0,n);
+    P={mode,list:mode==="flash"?pool:pool.map(q=>makeQuestion(q,mode==="mix"?null:mode)),i:0,score:0,show:false};
+    drawPractice();
+  };
+}
+function drawPractice(){
+  if(P.i>=P.list.length){
+    const f=P.mode==="flash";
+    $("#app").innerHTML=`<div class="card" style="text-align:center"><h2>${f?"Flashcards finished":"Practice complete"}</h2>
+    ${f?`<p>You reviewed ${P.list.length} cards.</p>`:`<div class="score">${P.score} / ${P.list.length}</div><p>${Math.round(P.score/P.list.length*100)}% correct</p>`}
+    <button class="btn" onclick="viewPractice()">New practice</button></div>`;return;
+  }
+  const pct=Math.round(P.i/P.list.length*100);
+  const head=`<div class="small">Question ${P.i+1} of ${P.list.length}${P.mode==="flash"?"":` · Score ${P.score}`}</div><div class="progress"><div style="width:${pct}%"></div></div>`;
+  if(P.mode==="flash"){
+    const q=Q[P.list[P.i].id];
+    $("#app").innerHTML=head+`<div class="card flash practice-card"><p class="q-text">&ldquo;${esc(q.q)}&rdquo;</p>
+    ${P.show?`<p class="q-bn bn">${esc(q.b)}</p><div class="meta" style="justify-content:center"><span class="who">${esc(q.c||q.a)}</span>${q.c?`<span class="small">— ${esc(q.a)}</span>`:""}${q.s?`<span class="src">${esc(q.s)}</span>`:""}</div>`:`<button class="btn alt" id="rv">Show answer</button>`}
+    <div class="row" style="justify-content:center;margin-top:16px">
+      <button class="btn alt" id="pv" ${P.i?"":"disabled"}>← Back</button>
+      <button class="bm ${BM.has(q.id)?"on":""}" data-bm="${q.id}">${BM.has(q.id)?"★ Bookmarked":"☆ Bookmark"}</button>
+      <button class="btn" id="nx">Next →</button></div></div>`;
+    if($("#rv"))$("#rv").onclick=()=>{P.show=true;drawPractice()};
+    $("#pv").onclick=()=>{P.i--;P.show=false;drawPractice()};
+    $("#nx").onclick=()=>{P.i++;P.show=false;drawPractice()};
+    return;
+  }
+  const it=P.list[P.i],q=Q[it.id],ans=it.sel!==null;
+  $("#app").innerHTML=head+`<div class="card practice-card"><div class="qtype">${TYPE_LABEL[it.type]}</div>
+  <p class="q-text">&ldquo;${esc(q.q)}&rdquo;</p>
+  ${it.opts.map((o,k)=>{
+    let c="";if(ans){if(o===it.correct)c="right";else if(k===it.sel)c="wrong"}
+    return `<button class="opt ${c}" data-k="${k}" ${ans?"disabled":""}>${esc(o)}</button>`}).join("")}
+  ${ans?`<div class="feedback ${it.opts[it.sel]===it.correct?"ok":"no"}">
+    ${it.opts[it.sel]===it.correct?"✔ Correct!":"✘ Wrong. Correct answer: <b>"+esc(it.correct)+"</b>"}
+    <div class="bn" style="margin-top:6px">${esc(q.b)}</div>
+    <div class="small" style="margin-top:4px">${esc(q.c||q.a)}${q.c?" — "+esc(q.a):""}${q.s?" · "+esc(q.s):""}</div></div>`:""}
+  <div class="row" style="margin-top:12px"><button class="bm ${BM.has(q.id)?"on":""}" data-bm="${q.id}">${BM.has(q.id)?"★ Bookmarked":"☆ Bookmark"}</button>
+  ${ans?`<button class="btn" id="nx" style="margin-left:auto">${P.i+1<P.list.length?"Next →":"Finish"}</button>`:""}</div></div>`;
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    it.sel=+b.dataset.k;if(it.opts[it.sel]===it.correct)P.score++;
+    if(it.opts[it.sel]!==it.correct){BM.add(it.id);saveBM()}
+    drawPractice();
+  });
+  if($("#nx"))$("#nx").onclick=()=>{P.i++;drawPractice()};
+}
+
+/* ---------------- EXAM ---------------- */
+let E=null,timerId=null;
+function stopTimer(){if(timerId){clearInterval(timerId);timerId=null}}
+function fmt(s){s=Math.max(0,s);return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+function viewExam(){
+  E=null;
+  const hist=load("bcsq_hist",[]);
+  $("#app").innerHTML=`<div class="card"><h2 style="margin-top:0">Exam</h2>
+  <p class="small">No feedback during the exam. Results and review are shown after you submit. Wrong answers are bookmarked automatically.</p>
+  <div class="row"><label>Quotes from</label>${scopeSelect("es")}</div>
+  <div class="row"><label>Questions</label><select id="en"><option>10</option><option selected>20</option><option>30</option><option>50</option></select></div>
+  <div class="row"><label>Time</label><select id="et"><option value="0.5">30 sec / question</option><option value="1" selected>1 min / question</option><option value="1.5">90 sec / question</option><option value="0">No time limit</option></select></div>
+  <button class="btn" id="ego">Start exam</button></div>
+  ${hist.length?`<div class="card"><b>Previous results</b>${hist.slice(-8).reverse().map(h=>`<div class="small" style="margin-top:6px">${esc(h.d)} — <b>${h.s}/${h.n}</b> (${Math.round(h.s/h.n*100)}%) · ${esc(h.sc)}</div>`).join("")}</div>`:""}`;
+  $("#ego").onclick=()=>{
+    let pool=shuffle(scopePool($("#es").value));
+    if(!pool.length){alert("No quotations available for this selection.");return}
+    pool=pool.slice(0,+$("#en").value);
+    const mins=+$("#et").value*pool.length;
+    E={qs:pool.map(q=>makeQuestion(q)),i:0,left:Math.round(mins*60),limited:mins>0,scope:$("#es").selectedOptions[0].text,done:false};
+    drawExam();
+    if(E.limited)timerId=setInterval(()=>{E.left--;const t=$("#tm");if(t)t.textContent=fmt(E.left);if(E.left<=0){submitExam()}},1000);
+  };
+}
+function drawExam(){
+  const it=E.qs[E.i],q=Q[it.id];
+  const answered=E.qs.filter(x=>x.sel!==null).length;
+  $("#app").innerHTML=`<div class="row" style="justify-content:space-between"><span class="small">Question ${E.i+1} / ${E.qs.length} · Answered ${answered}</span>${E.limited?`<span class="timer" id="tm">${fmt(E.left)}</span>`:""}</div>
+  <div class="progress"><div style="width:${Math.round(answered/E.qs.length*100)}%"></div></div>
+  <div class="card"><div class="qtype">${TYPE_LABEL[it.type]}</div>
+  <p class="q-text">&ldquo;${esc(q.q)}&rdquo;</p>
+  ${it.opts.map((o,k)=>`<button class="opt ${it.sel===k?"sel":""}" data-k="${k}">${esc(o)}</button>`).join("")}
+  <div class="row" style="margin-top:12px">
+    <button class="btn alt" id="pv" ${E.i?"":"disabled"}>← Prev</button>
+    <button class="btn alt" id="nx" ${E.i<E.qs.length-1?"":"disabled"}>Next →</button>
+    <button class="btn" id="sub" style="margin-left:auto">Submit exam</button></div></div>
+  <div class="card"><div class="small">Question palette</div><div class="pal">${E.qs.map((x,k)=>`<button data-j="${k}" class="${x.sel!==null?"done":""} ${k===E.i?"cur":""}">${k+1}</button>`).join("")}</div></div>`;
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{it.sel=+b.dataset.k;drawExam()});
+  document.querySelectorAll(".pal button").forEach(b=>b.onclick=()=>{E.i=+b.dataset.j;drawExam()});
+  $("#pv").onclick=()=>{E.i--;drawExam()};
+  $("#nx").onclick=()=>{E.i++;drawExam()};
+  $("#sub").onclick=()=>{
+    const un=E.qs.length-answered;
+    if(!un||confirm(`${un} question(s) unanswered. Submit anyway?`))submitExam();
+  };
+}
+function submitExam(){
+  if(E.done)return;E.done=true;stopTimer();
+  let s=0;
+  E.qs.forEach(x=>{if(x.sel!==null&&x.opts[x.sel]===x.correct)s++;else{BM.add(x.id)}});
+  saveBM();
+  const hist=load("bcsq_hist",[]);
+  hist.push({d:new Date().toLocaleString(),s:s,n:E.qs.length,sc:E.scope});save("bcsq_hist",hist.slice(-30));
+  const pct=Math.round(s/E.qs.length*100);
+  $("#app").innerHTML=`<div class="card" style="text-align:center"><h2 style="margin-top:0">Exam result</h2>
+  <div class="score">${s} / ${E.qs.length}</div><p>${pct}% · ${pct>=80?"Excellent!":pct>=60?"Good, keep practising.":"Needs more practice."}</p>
+  <p class="small">Wrong or skipped quotations were added to your Bookmarks.</p>
+  <button class="btn" onclick="viewExam()">New exam</button></div>
+  <h3>Review</h3>`+E.qs.map((x,k)=>{
+    const q=Q[x.id],ok=x.sel!==null&&x.opts[x.sel]===x.correct;
+    return `<div class="card"><div class="small">${k+1}. ${TYPE_LABEL[x.type]}</div>
+    <p class="q-text">&ldquo;${esc(q.q)}&rdquo;</p>
+    <div class="feedback ${ok?"ok":"no"}">${ok?"✔ Correct":"✘ "+(x.sel===null?"Not answered":"Your answer: "+esc(x.opts[x.sel]))}<br>Correct answer: <b>${esc(x.correct)}</b>
+    <div class="bn" style="margin-top:4px">${esc(q.b)}</div>
+    <div class="small">${esc(q.c||q.a)}${q.s?" · "+esc(q.s):""}</div></div></div>`}).join("");
+}
+
+/* ---------------- BOOKMARKS ---------------- */
+function viewBookmarks(){
+  const list=Q.filter(q=>BM.has(q.id));
+  $("#app").innerHTML=list.length?`<div class="row" style="justify-content:space-between"><span class="small">${list.length} bookmarked</span>
+  <span><button class="btn alt" id="bp">Practice bookmarks</button> <button class="btn danger" id="bc">Clear all</button></span></div>${list.map(q=>quoteCard(q)).join("")}`
+  :`<div class="empty">No bookmarks yet.<br>Tap ☆ Bookmark on any quotation. Wrong answers in practice/exam are added here automatically.</div>`;
+  if(list.length){
+    $("#bp").onclick=()=>{go("practice");$("#ps").value="bm"};
+    $("#bc").onclick=()=>{if(confirm("Remove all bookmarks?")){BM.clear();saveBM();viewBookmarks()}};
+  }
+}
+
+/* ---------------- STORIES ---------------- */
+function viewStories(){
+  $("#app").innerHTML=`<p class="small bn">নাটক ও সাহিত্যকর্মের গল্প-সারাংশ (বাংলায়)। বিস্তারিত দেখতে শিরোনামে ক্লিক করুন।</p>`+
+  STORIES.map((s,i)=>{
+    const qs=Q.filter(q=>q.s===s.t||(s.t==="Twelfth Night"&&q.s==="Twelfth Night"));
+    return `<details class="card story bn" ${i===0?"open":""}><summary><h3>${esc(s.t)}</h3><div class="by">${esc(s.w)}</div></summary>
+    <p><span class="lbl">চরিত্র:</span> ${esc(s.ch)}</p>
+    <p><span class="lbl">কাহিনি সংক্ষেপ:</span> ${esc(s.s)}</p>
+    <p><span class="lbl">মূল বিষয়/থিম:</span> ${esc(s.th)}</p>
+    ${qs.length?`<p><span class="lbl">এই কাজের উক্তি (${qs.length}টি):</span></p>${qs.map(q=>`<p style="font-family:Georgia,serif;margin:4px 0">&ldquo;${esc(q.q)}&rdquo; <span class="small">— ${esc(q.c||q.a)}</span></p>`).join("")}`:""}
+    </details>`}).join("");
+}
+
+saveBM();
+go("browse");
+</script>
+</body>
+</html>
